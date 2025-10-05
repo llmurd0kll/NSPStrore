@@ -1,0 +1,29 @@
+﻿@model NspStore.Web.ViewModels.RegisterVm
+@{ ViewData["Title"] = "Регистрация"; }
+
+<section class="auth">
+  <h1 class="auth__title">Регистрация</h1>
+  <form class="form form--auth" method="post">
+    <div class="form__row">
+      <label class="form__label">Почта</label>
+      <input class="form__input" asp-for="Email" />
+      <span class="form__error" asp-validation-for="Email"></span>
+    </div>
+    <div class="form__row">
+      <label class="form__label">ФИО</label>
+      <input class="form__input" asp-for="FullName" />
+      <span class="form__error" asp-validation-for="FullName"></span>
+    </div>
+    <div class="form__row">
+      <label class="form__label">Пароль</label>
+      <input class="form__input" asp-for="Password" type="password" />
+      <span class="form__error" asp-validation-for="Password"></span>
+    </div>
+    <div class="form__row">
+      <label class="form__label">Подтверждение</label>
+      <input class="form__input" asp-for="ConfirmPassword" type="password" />
+      <span class="form__error" asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <button class="btn btn--primary" type="submit">Создать аккаунт</button>
+  </form>
+</section>
