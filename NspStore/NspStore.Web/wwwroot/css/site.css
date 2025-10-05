@@ -29,3 +29,33 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.cart__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+    .cart__table th, .cart__table td {
+        border: 1px solid var(--border);
+        padding: .5rem;
+        text-align: left;
+    }
+
+    .cart__table th {
+        background: #f3f4f6;
+    }
+
+.checkout .form__row {
+    max-width: 520px;
+}
+
+.order-success {
+    text-align: center;
+}
+
+.order-success__actions {
+    margin-top: 1rem;
+    display: inline-flex;
+    gap: .5rem;
+}

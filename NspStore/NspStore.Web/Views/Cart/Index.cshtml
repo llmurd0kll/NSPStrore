@@ -1,0 +1,47 @@
+﻿@model List<NspStore.Web.Services.CartItemDto>
+@{
+    ViewData["Title"] = "Корзина";
+    var total = (decimal)ViewBag.Total;
+}
+
+<section class="cart">
+    <h1>Корзина</h1>
+
+    @if (!Model.Any())
+    {
+        <p>Корзина пуста.</p>
+    }
+    else
+    {
+        <table class="cart__table">
+            <thead>
+                <tr><th>Товар</th><th>Цена</th><th>Кол-во</th><th>Сумма</th><th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price.ToString("0.00") BYN</td>
+                        <td>@item.Qty</td>
+                        <td>@(item.Price* item.Qty).ToString("0.00") BYN</td>
+                        <td>
+                            <form method="post" asp-action="Remove">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <button class="btn" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <p><strong>Итого:</strong> @total.ToString("0.00") BYN</p>
+
+        <form method="post" asp-action="Clear">
+            <button class="btn" type="submit">Очистить корзину</button>
+        </form>
+
+        <p><a class="btn btn--primary" href="/Checkout">Оформить заказ</a></p>
+    }
+</section>

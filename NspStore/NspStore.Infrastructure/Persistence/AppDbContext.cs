@@ -31,7 +31,8 @@ namespace NspStore.Infrastructure.Persistence
                 .HasOne<ApplicationUser>()
                 .WithMany()
                 .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                ;
 
             // Связь Address.UserId -> AspNetUsers
             b.Entity<Address>()
@@ -39,6 +40,11 @@ namespace NspStore.Infrastructure.Persistence
                 .WithMany()
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Явно указываем, что Order.Status хранится как int
+            b.Entity<Order>()
+                .Property(o => o.Status)
+                .HasConversion<int>();
         }
     }
 }

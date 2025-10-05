@@ -1,0 +1,39 @@
+﻿@model NspStore.Web.ViewModels.AddressVm
+@{
+    ViewData["Title"] = "Редактировать адрес";
+}
+
+<section class="addresses">
+    <h1>Редактировать адрес</h1>
+    <form method="post">
+        <div class="form__row">
+            <label class="form__label">Страна</label>
+            <input class="form__input" asp-for="Country" />
+            <span class="form__error" asp-validation-for="Country"></span>
+        </div>
+        <div class="form__row">
+            <label class="form__label">Город</label>
+            <input class="form__input" asp-for="City" />
+            <span class="form__error" asp-validation-for="City"></span>
+        </div>
+        <div class="form__row">
+            <label class="form__label">Улица</label>
+            <input class="form__input" asp-for="Street" />
+            <span class="form__error" asp-validation-for="Street"></span>
+        </div>
+        <div class="form__row">
+            <label class="form__label">Квартира</label>
+            <input class="form__input" asp-for="Apartment" />
+        </div>
+        <div class="form__row">
+            <label class="form__label">Почтовый индекс</label>
+            <input class="form__input" asp-for="PostalCode" />
+            <span class="form__error" asp-validation-for="PostalCode"></span>
+        </div>
+        <div class="form__row">
+            <input type="checkbox" asp-for="IsDefault" id="IsDefault" />
+            <label class="form__label" for="IsDefault">Сделать основным</label>
+        </div>
+        <button class="btn btn--primary" type="submit">Сохранить</button>
+    </form>
+</section>

@@ -4,14 +4,18 @@ using NspStore.Application.Interfaces;
 using NspStore.Application.Services;
 using NspStore.Infrastructure.Identity;
 using NspStore.Infrastructure.Persistence;
+using NspStore.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1. MVC
 builder.Services.AddControllersWithViews();
 
+// 2. EF Core + SQL Server
 builder.Services.AddDbContext<AppDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// 3. Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => {
     opts.Password.RequiredLength = 8;
     opts.Password.RequireDigit = true;
@@ -21,20 +25,32 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => {
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// 4. Authorization
 builder.Services.AddAuthorization(opts => {
     opts.AddPolicy("RequireAdmin", p => p.RequireRole("Admin"));
     opts.AddPolicy("RequireManager", p => p.RequireRole("Manager", "Admin"));
 });
 
+// 5. Session + CartService
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+builder.Services.AddScoped<CartService>();
 
+// 6. Application services
 builder.Services.AddScoped<ICatalogService, CatalogService>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 
 builder.Services.ConfigureApplicationCookie(opts => {
     opts.LoginPath = "/Account/Login";
     opts.AccessDeniedPath = "/Account/AccessDenied";
 });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+builder.Services.AddScoped<CartService>();
+
 
 var app = builder.Build();
 
@@ -55,6 +71,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
 
 app.UseSession();
 app.UseAuthentication();

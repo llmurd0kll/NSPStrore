@@ -1,0 +1,24 @@
+﻿@model IEnumerable<NspStore.Domain.Entities.Order>
+@{
+    ViewData["Title"] = "Заказы";
+}
+
+<h1>Заказы</h1>
+<table class="cart__table">
+    <thead>
+        <tr><th>ID</th><th>Дата</th><th>Пользователь</th><th>Сумма</th><th>Статус</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.Id</td>
+                <td>@o.CreatedAt.ToLocalTime()</td>
+                <td>@o.UserId</td>
+                <td>@o.Total.ToString("0.00") BYN</td>
+                <td>@o.Status</td>
+                <td><a href="@Url.Action("Details", new { id = o.Id })">Подробнее</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

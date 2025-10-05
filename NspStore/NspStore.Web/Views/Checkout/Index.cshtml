@@ -1,0 +1,34 @@
+﻿@model List<NspStore.Web.Services.CartItemDto>
+@{
+    ViewData["Title"] = "Оформление заказа";
+    var addresses = (List<NspStore.Domain.Entities.Address>)ViewBag.Addresses;
+}
+
+<section class="checkout">
+    <h1>Оформление заказа</h1>
+
+    @if (!addresses.Any())
+    {
+        <p>У вас нет сохранённых адресов. Добавьте адрес перед оформлением.</p>
+        <p><a class="btn btn--primary" href="/Addresses">Перейти к адресам</a></p>
+    }
+    else
+    {
+        <form method="post" asp-action="Place">
+            <div class="form__row">
+                <label class="form__label">Адрес доставки</label>
+                <select class="form__input" name="shippingAddressId">
+                    @foreach (var a in addresses)
+                    {
+                        <option value="@a.Id">@a.City, @a.Street @a.Apartment</option>
+                    }
+                </select>
+            </div>
+            <div class="form__row">
+                <label class="form__label">Комментарий</label>
+                <textarea class="form__input" name="comment"></textarea>
+            </div>
+            <button class="btn btn--primary" type="submit">Подтвердить заказ</button>
+        </form>
+    }
+</section>

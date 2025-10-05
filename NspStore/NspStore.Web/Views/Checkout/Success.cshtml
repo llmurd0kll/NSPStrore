@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Заказ оформлен";
+}
+<section class="order-success">
+    <h1>Спасибо за заказ!</h1>
+    <p>Ваш заказ №@ViewBag.OrderId успешно создан.</p>
+    <p>Мы свяжемся с вами для подтверждения и уточнения деталей доставки.</p>
+    <div class="order-success__actions">
+        <a class="btn btn--primary" href="/Catalog">Вернуться в каталог</a>
+        <a class="btn" href="/Cart">Открыть корзину</a>
+    </div>
+</section>

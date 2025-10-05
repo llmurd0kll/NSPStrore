@@ -1,0 +1,52 @@
+﻿@model NspStore.Domain.Entities.Order
+@{
+    ViewData["Title"] = "Заказ " + Model.Id;
+}
+@Html.AntiForgeryToken()
+
+<h1>Заказ №@Model.Id</h1>
+<p><strong>Дата:</strong> @Model.CreatedAt.ToLocalTime()</p>
+<p><strong>Пользователь:</strong> @Model.UserId</p>
+<p><strong>Адрес:</strong> @(Model.ShippingAddress != null ? $"{Model.ShippingAddress.City}, {Model.ShippingAddress.Street}" : "—")</p>
+<p><strong>Комментарий:</strong> @Model.Comment</p>
+<p><strong>Статус:</strong> @Model.Status</p>
+
+<h2>Товары</h2>
+<table class="cart__table">
+    <thead>
+        <tr><th>Название</th><th>Цена</th><th>Кол-во</th><th>Сумма</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model.Items)
+        {
+            <tr>
+                <td>@i.ProductName</td>
+                <td>@i.UnitPrice.ToString("0.00")</td>
+                <td>@i.Quantity</td>
+                <td>@(i.UnitPrice* i.Quantity).ToString("0.00")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
+
+<h2>Изменить статус</h2>
+<form method="post" asp-area="Admin" asp-controller="Orders" asp-action="ChangeStatus">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <select name="status" class="form__input">
+        @foreach (NspStore.Domain.Enums.OrderStatus s in Enum.GetValues(typeof(NspStore.Domain.Enums.OrderStatus)))
+        {
+            <option value="@((int)s)" selected="@(Model.Status == s ? "selected" : null)">
+                @s
+            </option>
+        }
+    </select>
+
+    <button type="submit" class="btn btn--primary">Сохранить</button>
+</form>
+
+
+
