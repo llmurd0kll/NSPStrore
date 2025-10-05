@@ -1,7 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Главная";
 }
-<section>
-    <h1>Добро пожаловать в NSP Store</h1>
-    <p><a class="btn btn--primary" href="/Catalog">Перейти в каталог</a></p>
+
+<section class="section section--hero">
+    <div class="container">
+        <h1 class="h1">Добро пожаловать в NSP Store</h1>
+        <p class="muted">Официальный интернет‑магазин Nature’s Sunshine Products</p>
+
+        <div class="section__actions">
+            <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
+                Перейти в каталог
+            </a>
+        </div>
+    </div>
 </section>

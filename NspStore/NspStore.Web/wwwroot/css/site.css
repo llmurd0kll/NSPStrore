@@ -1,61 +1,40 @@
-html {
-  font-size: 14px;
+@import url('reset.css');
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('product.css');
+@import url('cart.css');
+@import url('addresses.css');
+@import url('admin-orders.css');
+@import url('orders.css');
+@import url('checkout.css');
+@import url('order-success.css');
+@import url('access-denied.css');
+@import url('auth.css');
+@import url('profile.css');
+
+/* Глобальные секции */
+.main {
+    padding: var(--gap-24) 0;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.section {
+    padding: var(--gap-24) 0;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.section--soft {
+    background: var(--color-bg-soft);
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-
-.cart__table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-}
-
-    .cart__table th, .cart__table td {
-        border: 1px solid var(--border);
-        padding: .5rem;
-        text-align: left;
-    }
-
-    .cart__table th {
-        background: #f3f4f6;
-    }
-
-.checkout .form__row {
-    max-width: 520px;
-}
-
-.order-success {
+.section--hero {
+    padding: var(--gap-32) 0;
     text-align: center;
 }
 
-.order-success__actions {
-    margin-top: 1rem;
-    display: inline-flex;
-    gap: .5rem;
+    .section--hero .h1 {
+        margin-bottom: var(--gap-16);
+    }
+
+.section__actions {
+    margin-top: var(--gap-24);
 }

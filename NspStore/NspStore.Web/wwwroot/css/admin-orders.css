@@ -1,0 +1,21 @@
+﻿.admin-orders__actions {
+    display: flex;
+    gap: var(--gap-8);
+}
+
+.admin-orders__table td {
+    vertical-align: middle;
+}
+.admin-order__info {
+    margin-bottom: var(--gap-24);
+}
+
+.admin-order__items td {
+    vertical-align: middle;
+}
+
+.admin-order__total {
+    margin-top: var(--gap-16);
+    font-size: var(--fs-18);
+    font-weight: 600;
+}

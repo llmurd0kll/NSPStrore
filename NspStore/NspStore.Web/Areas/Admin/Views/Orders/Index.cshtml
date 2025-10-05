@@ -1,24 +1,75 @@
 ﻿@model IEnumerable<NspStore.Domain.Entities.Order>
+@using NspStore.Domain.Enums
 @{
     ViewData["Title"] = "Заказы";
 }
 
-<h1>Заказы</h1>
-<table class="cart__table">
-    <thead>
-        <tr><th>ID</th><th>Дата</th><th>Пользователь</th><th>Сумма</th><th>Статус</th><th></th></tr>
-    </thead>
-    <tbody>
-        @foreach (var o in Model)
+<section class="section admin-orders">
+    <div class="container">
+        <h1 class="h1">Заказы</h1>
+
+        @if (!Model.Any())
         {
-            <tr>
-                <td>@o.Id</td>
-                <td>@o.CreatedAt.ToLocalTime()</td>
-                <td>@o.UserId</td>
-                <td>@o.Total.ToString("0.00") BYN</td>
-                <td>@o.Status</td>
-                <td><a href="@Url.Action("Details", new { id = o.Id })">Подробнее</a></td>
-            </tr>
+            <p class="muted">Заказов пока нет.</p>
         }
-    </tbody>
-</table>
+        else
+        {
+            <table class="table admin-orders__table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Пользователь</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+                            <td>@o.Id</td>
+                            <td>@o.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@o.UserId</td>
+                            <td>@o.Total.ToString("0.00") BYN</td>
+                            <td>
+                                @{
+                                    string statusText = o.Status switch
+                                    {
+                                        OrderStatus.New => "Новый",
+                                        OrderStatus.Confirmed => "Подтверждён",
+                                        OrderStatus.Packed => "Упакован",
+                                        OrderStatus.Shipped => "Отгружен",
+                                        OrderStatus.Completed => "Завершён",
+                                        OrderStatus.Cancelled => "Отменён",
+                                        _ => o.Status.ToString()
+                                    };
+
+                                    string badgeClass = o.Status switch
+                                    {
+                                        OrderStatus.New => "badge--neutral",
+                                        OrderStatus.Confirmed => "badge--warning",
+                                        OrderStatus.Packed => "badge--warning",
+                                        OrderStatus.Shipped => "badge--warning",
+                                        OrderStatus.Completed => "badge--success",
+                                        OrderStatus.Cancelled => "badge--danger",
+                                        _ => "badge--neutral"
+                                    };
+                                }
+                                <span class="badge @badgeClass">@statusText</span>
+                            </td>
+                            <td class="admin-orders__actions">
+                                <a class="btn btn--secondary btn--sm"
+                                   asp-action="Details"
+                                   asp-route-id="@o.Id">
+                                    Подробнее
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

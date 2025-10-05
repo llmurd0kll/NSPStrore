@@ -1,0 +1,11 @@
+﻿.orders__table td {
+    vertical-align: top;
+}
+
+.orders__items {
+    margin: 0;
+    padding-left: 1rem;
+    list-style: disc;
+    font-size: var(--fs-14);
+    color: var(--color-muted);
+}

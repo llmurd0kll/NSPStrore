@@ -1,0 +1,9 @@
+﻿.profile__info {
+    margin-bottom: var(--gap-24);
+    font-size: var(--fs-16);
+}
+
+.profile__actions {
+    display: flex;
+    gap: var(--gap-16);
+}

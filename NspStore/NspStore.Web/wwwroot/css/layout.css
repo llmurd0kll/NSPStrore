@@ -1,0 +1,116 @@
+﻿/* Контейнер и базовые зоны */
+.container {
+    width: min(var(--container-max), 100% - 2rem);
+    margin-inline: auto;
+}
+
+.header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+}
+
+.footer {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-muted);
+}
+
+/* Навбар */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-16);
+    padding: var(--gap-16) 0;
+}
+
+.navbar__brand {
+    font-family: var(--font-heading);
+    font-size: var(--fs-24);
+    font-weight: 700;
+}
+
+.navbar__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-16);
+}
+
+.navbar__link {
+    padding: 8px 10px;
+    border-radius: var(--radius-6);
+    transition: background var(--transition-base);
+}
+
+    .navbar__link:hover {
+        background: var(--color-bg-soft);
+    }
+
+/* Мобильное меню (простое переключение класса) */
+
+/* По умолчанию меню видно (десктоп) */
+.navbar__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-16);
+}
+
+/* По умолчанию кнопку скрываем */
+.navbar__toggle {
+    display: none;
+}
+
+/* Мобильное меню */
+@media (max-width: 768px) {
+    /* скрываем меню */
+    .navbar__menu {
+        display: none;
+        flex-direction: column;
+        gap: var(--gap-12);
+        padding: var(--gap-16) 0;
+    }
+
+        /* показываем меню при открытии */
+        .navbar__menu.navbar__menu--open {
+            display: flex;
+        }
+
+    /* показываем кнопку */
+    .navbar__toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-6);
+        background: var(--color-bg);
+        cursor: pointer;
+    }
+}
+/* Основные заголовки и текст */
+.h1, h1 {
+    font-family: var(--font-heading);
+    font-size: var(--fs-32);
+    font-weight: 700;
+}
+
+.h2, h2 {
+    font-family: var(--font-heading);
+    font-size: var(--fs-24);
+    font-weight: 700;
+}
+
+.h3, h3 {
+    font-family: var(--font-heading);
+    font-size: var(--fs-20);
+    font-weight: 600;
+}
+
+p {
+    font-size: var(--fs-16);
+    color: var(--color-text);
+}
+
+.muted {
+    color: var(--color-muted);
+}

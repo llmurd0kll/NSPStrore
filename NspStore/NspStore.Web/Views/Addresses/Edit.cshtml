@@ -3,37 +3,51 @@
     ViewData["Title"] = "Редактировать адрес";
 }
 
-<section class="addresses">
-    <h1>Редактировать адрес</h1>
-    <form method="post">
-        <div class="form__row">
-            <label class="form__label">Страна</label>
-            <input class="form__input" asp-for="Country" />
-            <span class="form__error" asp-validation-for="Country"></span>
-        </div>
-        <div class="form__row">
-            <label class="form__label">Город</label>
-            <input class="form__input" asp-for="City" />
-            <span class="form__error" asp-validation-for="City"></span>
-        </div>
-        <div class="form__row">
-            <label class="form__label">Улица</label>
-            <input class="form__input" asp-for="Street" />
-            <span class="form__error" asp-validation-for="Street"></span>
-        </div>
-        <div class="form__row">
-            <label class="form__label">Квартира</label>
-            <input class="form__input" asp-for="Apartment" />
-        </div>
-        <div class="form__row">
-            <label class="form__label">Почтовый индекс</label>
-            <input class="form__input" asp-for="PostalCode" />
-            <span class="form__error" asp-validation-for="PostalCode"></span>
-        </div>
-        <div class="form__row">
-            <input type="checkbox" asp-for="IsDefault" id="IsDefault" />
-            <label class="form__label" for="IsDefault">Сделать основным</label>
-        </div>
-        <button class="btn btn--primary" type="submit">Сохранить</button>
-    </form>
+<section class="section addresses">
+    <div class="container">
+        <h1 class="h1">Редактировать адрес</h1>
+
+        <form method="post" class="form">
+            @Html.AntiForgeryToken()
+
+            <div class="form__row">
+                <label asp-for="Country" class="form__label"></label>
+                <input class="form__input" asp-for="Country" />
+                <span class="form__error" asp-validation-for="Country"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="City" class="form__label"></label>
+                <input class="form__input" asp-for="City" />
+                <span class="form__error" asp-validation-for="City"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Street" class="form__label"></label>
+                <input class="form__input" asp-for="Street" />
+                <span class="form__error" asp-validation-for="Street"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Apartment" class="form__label"></label>
+                <input class="form__input" asp-for="Apartment" />
+            </div>
+
+            <div class="form__row">
+                <label asp-for="PostalCode" class="form__label"></label>
+                <input class="form__input" asp-for="PostalCode" />
+                <span class="form__error" asp-validation-for="PostalCode"></span>
+            </div>
+
+            <div class="form__row form__row--checkbox">
+                <input type="checkbox" asp-for="IsDefault" id="IsDefault" class="form__checkbox" />
+                <label class="form__label" for="IsDefault">Сделать основным</label>
+            </div>
+
+            <div class="section__actions">
+                <button class="btn btn--primary" type="submit">Сохранить</button>
+                <a class="btn btn--secondary" asp-action="Index">Отмена</a>
+            </div>
+        </form>
+    </div>
 </section>

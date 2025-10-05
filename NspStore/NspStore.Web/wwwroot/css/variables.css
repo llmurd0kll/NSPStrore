@@ -1,0 +1,46 @@
+:root {
+    /* Палитра NSP + INWOOD */
+    --color-primary: #007A3D; /* зелёный акцент NSP */
+    --color-accent: #D4A373; /* тёплый беж/золото для премиальных акцентов */
+    --color-bg: #FFFFFF;
+    --color-bg-soft: #F7F7F7;
+    --color-text: #222222;
+    --color-muted: #666666;
+    --color-border: #E5E5E5;
+    --color-success: #22C55E;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+    /* Типографика */
+    --font-base: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-heading: "Montserrat", "Inter", system-ui, sans-serif;
+    --fs-12: 12px;
+    --fs-14: 14px;
+    --fs-16: 16px;
+    --fs-18: 18px;
+    --fs-20: 20px;
+    --fs-24: 24px;
+    --fs-32: 32px;
+    --fs-40: 40px;
+    --fs-48: 48px;
+    /* Layout */
+    --container-max: 1200px;
+    --gap-4: 4px;
+    --gap-8: 8px;
+    --gap-12: 12px;
+    --gap-16: 16px;
+    --gap-24: 24px;
+    --gap-32: 32px;
+    --radius-4: 4px;
+    --radius-6: 6px;
+    --radius-10: 10px;
+    --shadow-1: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-2: 0 8px 20px rgba(0,0,0,0.12);
+    /* Брейкпоинты */
+    --bp-sm: 480px;
+    --bp-md: 768px;
+    --bp-lg: 1024px;
+    --bp-xl: 1280px;
+    /* Скорости анимаций */
+    --transition-fast: 120ms;
+    --transition-base: 200ms;
+}

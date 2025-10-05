@@ -1,0 +1,11 @@
+﻿.access-denied {
+    text-align: center;
+    padding: var(--gap-32) 0;
+}
+
+    .access-denied .section__actions {
+        margin-top: var(--gap-24);
+        display: flex;
+        justify-content: center;
+        gap: var(--gap-16);
+    }

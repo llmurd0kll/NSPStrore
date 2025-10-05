@@ -1,52 +1,93 @@
 ﻿@model NspStore.Domain.Entities.Order
+@using NspStore.Domain.Enums
 @{
     ViewData["Title"] = "Заказ " + Model.Id;
 }
-@Html.AntiForgeryToken()
 
-<h1>Заказ №@Model.Id</h1>
-<p><strong>Дата:</strong> @Model.CreatedAt.ToLocalTime()</p>
-<p><strong>Пользователь:</strong> @Model.UserId</p>
-<p><strong>Адрес:</strong> @(Model.ShippingAddress != null ? $"{Model.ShippingAddress.City}, {Model.ShippingAddress.Street}" : "—")</p>
-<p><strong>Комментарий:</strong> @Model.Comment</p>
-<p><strong>Статус:</strong> @Model.Status</p>
+<section class="section admin-order">
+    <div class="container">
+        <h1 class="h1">Заказ №@Model.Id</h1>
 
-<h2>Товары</h2>
-<table class="cart__table">
-    <thead>
-        <tr><th>Название</th><th>Цена</th><th>Кол-во</th><th>Сумма</th></tr>
-    </thead>
-    <tbody>
-        @foreach (var i in Model.Items)
-        {
-            <tr>
-                <td>@i.ProductName</td>
-                <td>@i.UnitPrice.ToString("0.00")</td>
-                <td>@i.Quantity</td>
-                <td>@(i.UnitPrice* i.Quantity).ToString("0.00")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <div class="admin-order__info">
+            <p><strong>Дата:</strong> @Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
+            <p><strong>Пользователь:</strong> @Model.UserId</p>
+            <p><strong>Адрес:</strong> @(Model.ShippingAddress != null ? $"{Model.ShippingAddress.City}, {Model.ShippingAddress.Street}" : "—")</p>
+            <p><strong>Комментарий:</strong> @Model.Comment</p>
+            <p>
+                <strong>Статус:</strong>
+                @{
+                    string statusText = Model.Status switch
+                    {
+                        OrderStatus.New => "Новый",
+                        OrderStatus.Confirmed => "Подтверждён",
+                        OrderStatus.Packed => "Упакован",
+                        OrderStatus.Shipped => "Отгружен",
+                        OrderStatus.Completed => "Завершён",
+                        OrderStatus.Cancelled => "Отменён",
+                        _ => Model.Status.ToString()
+                    };
 
-<p><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
+                    string badgeClass = Model.Status switch
+                    {
+                        OrderStatus.New => "badge--neutral",
+                        OrderStatus.Confirmed => "badge--warning",
+                        OrderStatus.Packed => "badge--warning",
+                        OrderStatus.Shipped => "badge--warning",
+                        OrderStatus.Completed => "badge--success",
+                        OrderStatus.Cancelled => "badge--danger",
+                        _ => "badge--neutral"
+                    };
+                }
+                <span class="badge @badgeClass">@statusText</span>
+            </p>
+        </div>
 
-<h2>Изменить статус</h2>
-<form method="post" asp-area="Admin" asp-controller="Orders" asp-action="ChangeStatus">
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="id" value="@Model.Id" />
+        <h2 class="h2">Товары</h2>
+        <table class="table admin-order__items">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model.Items)
+                {
+                    <tr>
+                        <td>@i.ProductName</td>
+                        <td>@i.UnitPrice.ToString("0.00") BYN</td>
+                        <td>@i.Quantity</td>
+                        <td>@(i.UnitPrice* i.Quantity).ToString("0.00") BYN</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-    <select name="status" class="form__input">
-        @foreach (NspStore.Domain.Enums.OrderStatus s in Enum.GetValues(typeof(NspStore.Domain.Enums.OrderStatus)))
-        {
-            <option value="@((int)s)" selected="@(Model.Status == s ? "selected" : null)">
-                @s
-            </option>
-        }
-    </select>
+        <p class="admin-order__total"><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
 
-    <button type="submit" class="btn btn--primary">Сохранить</button>
-</form>
+        <h2 class="h2">Изменить статус</h2>
+        <form method="post" asp-area="Admin" asp-controller="Orders" asp-action="ChangeStatus" class="form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
 
+            <div class="form__row">
+                <label for="status" class="form__label">Статус</label>
+                <select id="status" name="status" class="form__select">
+                    @foreach (OrderStatus s in Enum.GetValues(typeof(OrderStatus)))
+                    {
+                        <option value="@((int)s)" selected="@(Model.Status == s ? "selected" : null)">
+                            @s
+                        </option>
+                    }
+                </select>
+            </div>
 
-
+            <div class="section__actions">
+                <button type="submit" class="btn btn--primary">Сохранить</button>
+                <a class="btn btn--secondary" asp-action="Index">Назад к списку</a>
+            </div>
+        </form>
+    </div>
+</section>

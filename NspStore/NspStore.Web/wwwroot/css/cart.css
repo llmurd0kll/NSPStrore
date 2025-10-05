@@ -1,0 +1,19 @@
+﻿.cart__summary {
+    margin-top: var(--gap-24);
+    display: grid;
+    gap: var(--gap-16);
+}
+
+.cart__total {
+    font-size: var(--fs-18);
+    font-weight: 600;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.btn--sm {
+    padding: 4px 10px;
+    font-size: var(--fs-14);
+}

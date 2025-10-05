@@ -1,0 +1,8 @@
+﻿.addresses__actions {
+    display: flex;
+    gap: var(--gap-8);
+}
+
+.inline-form {
+    display: inline;
+}

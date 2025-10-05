@@ -4,31 +4,43 @@
     var addresses = (List<NspStore.Domain.Entities.Address>)ViewBag.Addresses;
 }
 
-<section class="checkout">
-    <h1>Оформление заказа</h1>
+<section class="section checkout">
+    <div class="container">
+        <h1 class="h1">Оформление заказа</h1>
 
-    @if (!addresses.Any())
-    {
-        <p>У вас нет сохранённых адресов. Добавьте адрес перед оформлением.</p>
-        <p><a class="btn btn--primary" href="/Addresses">Перейти к адресам</a></p>
-    }
-    else
-    {
-        <form method="post" asp-action="Place">
-            <div class="form__row">
-                <label class="form__label">Адрес доставки</label>
-                <select class="form__input" name="shippingAddressId">
-                    @foreach (var a in addresses)
-                    {
-                        <option value="@a.Id">@a.City, @a.Street @a.Apartment</option>
-                    }
-                </select>
+        @if (!addresses.Any())
+        {
+            <p class="muted">У вас нет сохранённых адресов. Добавьте адрес перед оформлением.</p>
+            <div class="section__actions">
+                <a class="btn btn--primary" asp-controller="Addresses" asp-action="Index">
+                    Перейти к адресам
+                </a>
             </div>
-            <div class="form__row">
-                <label class="form__label">Комментарий</label>
-                <textarea class="form__input" name="comment"></textarea>
-            </div>
-            <button class="btn btn--primary" type="submit">Подтвердить заказ</button>
-        </form>
-    }
+        }
+        else
+        {
+            <form method="post" asp-action="Place" class="form">
+                @Html.AntiForgeryToken()
+
+                <div class="form__row">
+                    <label for="shippingAddressId" class="form__label">Адрес доставки</label>
+                    <select id="shippingAddressId" class="form__select" name="shippingAddressId" required>
+                        @foreach (var a in addresses)
+                        {
+                            <option value="@a.Id">@a.City, @a.Street @a.Apartment</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form__row">
+                    <label for="comment" class="form__label">Комментарий</label>
+                    <textarea id="comment" class="form__textarea" name="comment" rows="3"></textarea>
+                </div>
+
+                <div class="section__actions">
+                    <button class="btn btn--primary" type="submit">Подтвердить заказ</button>
+                </div>
+            </form>
+        }
+    </div>
 </section>

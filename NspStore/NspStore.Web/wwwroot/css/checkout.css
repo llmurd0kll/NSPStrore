@@ -1,0 +1,8 @@
+﻿.checkout .form {
+    margin-top: var(--gap-24);
+    max-width: 600px;
+}
+
+.checkout .section__actions {
+    margin-top: var(--gap-24);
+}

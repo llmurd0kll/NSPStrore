@@ -3,35 +3,44 @@
     ViewData["Title"] = Model.Name;
     var image = Model.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
 }
-<article class="product" itemscope itemtype="https://schema.org/Product">
-    <header class="product__header">
-        <h1 class="product__title" itemprop="name">@Model.Name</h1>
-    </header>
-    <div class="product__layout">
-        <figure class="product__media">
-            <img class="product__image" src="@image" alt="@Model.Name" itemprop="image" />
-        </figure>
-        <section class="product__info">
-            <div class="product__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                <meta itemprop="priceCurrency" content="BYN" />
-                <span class="product__price-value" itemprop="price">@Model.Price.ToString("0.00")</span> BYN
-            </div>
-            <div class="product__desc" itemprop="description">
-                @Model.FullDescription
-            </div>
-            @if (!string.IsNullOrWhiteSpace(Model.CompositionHtml))
-            {
-                <section class="product__composition">
-                    <h2 class="product__subtitle">Состав и дозировка</h2>
-                    @Html.Raw(Model.CompositionHtml)
-                </section>
-            }
-            <footer class="product__actions">
-                <form method="post" action="/Cart/Add" aria-label="Добавить товар в корзину">
-                    <input type="hidden" name="productId" value="@Model.Id" />
-                    <button class="btn btn--primary" type="submit">В корзину</button>
-                </form>
-            </footer>
-        </section>
+
+<section class="section product" itemscope itemtype="https://schema.org/Product">
+    <div class="container">
+        <header class="product__header">
+            <h1 class="h1 product__title" itemprop="name">@Model.Name</h1>
+        </header>
+
+        <div class="product__layout">
+            <figure class="product__media">
+                <img class="product__image" src="@image" alt="@Model.Name" itemprop="image" />
+            </figure>
+
+            <section class="product__info">
+                <div class="product__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="BYN" />
+                    <span class="product__price-value" itemprop="price">@Model.Price.ToString("0.00")</span> BYN
+                </div>
+
+                <div class="product__desc" itemprop="description">
+                    @Model.FullDescription
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.CompositionHtml))
+                {
+                    <section class="product__composition">
+                        <h2 class="product__subtitle">Состав и дозировка</h2>
+                        @Html.Raw(Model.CompositionHtml)
+                    </section>
+                }
+
+                <footer class="product__actions section__actions">
+                    <form method="post" asp-controller="Cart" asp-action="Add" aria-label="Добавить товар в корзину">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button class="btn btn--primary" type="submit">В корзину</button>
+                    </form>
+                </footer>
+            </section>
+        </div>
     </div>
-</article>
+</section>

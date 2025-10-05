@@ -1,38 +1,79 @@
-﻿@model IEnumerable<NspStore.Domain.Entities.Order>
+﻿@model List<NspStore.Domain.Entities.Order>
+@using NspStore.Domain.Enums
 @{
     ViewData["Title"] = "Мои заказы";
 }
 
-<h1>Мои заказы</h1>
+<section class="section orders">
+    <div class="container">
+        <h1 class="h1">Мои заказы</h1>
 
-@if (!Model.Any())
-{
-    <p>У вас пока нет заказов.</p>
-}
-else
-{
-    <table class="cart__table">
-        <thead>
-            <tr><th>ID</th><th>Дата</th><th>Сумма</th><th>Статус</th><th>Товары</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var o in Model)
-            {
-                <tr>
-                    <td>@o.Id</td>
-                    <td>@o.CreatedAt.ToLocalTime()</td>
-                    <td>@o.Total.ToString("0.00") BYN</td>
-                    <td>@o.Status</td>
-                    <td>
-                        <ul>
-                            @foreach (var i in o.Items)
-                            {
-                                <li>@i.ProductName × @i.Quantity</li>
-                            }
-                        </ul>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        @if (Model == null || Model.Count == 0)
+        {
+            <p class="muted">У вас пока нет заказов.</p>
+            <div class="section__actions">
+                <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
+                    Перейти в каталог
+                </a>
+            </div>
+        }
+        else
+        {
+            <table class="table orders__table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Товары</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+                            <td>@o.Id</td>
+                            <td>@o.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@o.Total.ToString("0.00") BYN</td>
+                            <td>
+                                @{
+                                    string statusText = o.Status switch
+                                    {
+                                        OrderStatus.New => "Новый",
+                                        OrderStatus.Confirmed => "Подтверждён",
+                                        OrderStatus.Packed => "Упакован",
+                                        OrderStatus.Shipped => "Отгружен",
+                                        OrderStatus.Completed => "Завершён",
+                                        OrderStatus.Cancelled => "Отменён",
+                                        _ => o.Status.ToString()
+                                    };
+
+                                    string badgeClass = o.Status switch
+                                    {
+                                        OrderStatus.New => "badge--neutral",
+                                        OrderStatus.Confirmed => "badge--warning",
+                                        OrderStatus.Packed => "badge--warning",
+                                        OrderStatus.Shipped => "badge--warning",
+                                        OrderStatus.Completed => "badge--success",
+                                        OrderStatus.Cancelled => "badge--danger",
+                                        _ => "badge--neutral"
+                                    };
+                                }
+                                <span class="badge @badgeClass">@statusText</span>
+                            </td>
+                            <td>
+                                <ul class="orders__items">
+                                    @foreach (var i in o.Items ?? Enumerable.Empty<NspStore.Domain.Entities.OrderItem>())
+                                    {
+                                        <li>@i.ProductName × @i.Quantity</li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>
