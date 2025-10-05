@@ -1,22 +1,31 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NspStore.Infrastructure.Identity;
+using NspStore.Infrastructure.Persistence;
 using NspStore.Web.ViewModels;
 
 namespace NspStore.Web.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _users;
         private readonly SignInManager<ApplicationUser> _signIn;
+        private readonly AppDbContext _db;
 
-        public AccountController(UserManager<ApplicationUser> users, SignInManager<ApplicationUser> signIn)
+        public AccountController(
+            UserManager<ApplicationUser> users,
+            SignInManager<ApplicationUser> signIn,
+            AppDbContext db)
         {
             _users = users;
             _signIn = signIn;
+            _db = db;
         }
 
+        // --- Регистрация и логин оставляем как есть ---
         [HttpGet, AllowAnonymous]
         public IActionResult Register() => View(new RegisterVm());
 
@@ -65,7 +74,6 @@ namespace NspStore.Web.Controllers
             return View(vm);
         }
 
-        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
@@ -74,5 +82,27 @@ namespace NspStore.Web.Controllers
 
         [AllowAnonymous]
         public IActionResult AccessDenied() => View();
+
+        // --- Новые действия ---
+
+        // Профиль
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _users.GetUserAsync(User);
+            return View(user);
+        }
+
+        // Мои заказы
+        public async Task<IActionResult> Orders()
+        {
+            var user = await _users.GetUserAsync(User);
+            var orders = await _db.Orders
+                .Include(o => o.Items)
+                .Where(o => o.UserId == user!.Id)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+
+            return View(orders);
+        }
     }
 }

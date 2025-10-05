@@ -1,0 +1,11 @@
+﻿@model NspStore.Infrastructure.Identity.ApplicationUser
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<h1>Профиль</h1>
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Имя:</strong> @Model.FullName</p>
+
+<p><a class="btn btn--primary" href="/Addresses">Мои адреса</a></p>
+<p><a class="btn btn--primary" href="/Account/Orders">Мои заказы</a></p>
