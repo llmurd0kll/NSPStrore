@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model NspStore.Web.ViewModels.CatalogVm
 @{
+    ViewData["Title"] = "Каталог";
 }
+
+<section class="catalog">
+    <header class="catalog__header">
+        <h1 class="catalog__title">Каталог NSP</h1>
+        <form class="catalog__filter" method="get" aria-label="Фильтр каталога">
+            <input class="form__input" type="text" name="q" value="@Model.Q" placeholder="Поиск по товарам..." />
+            <button class="btn btn--primary" type="submit">Найти</button>
+        </form>
+    </header>
+
+    <div class="catalog-grid">
+        @foreach (var p in Model.Items)
+        {
+            var image = p.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
+            <article class="product-card" itemscope itemtype="https://schema.org/Product">
+                <figure class="product-card__media">
+                    <img class="product-card__image" src="@image" alt="@p.Name" itemprop="image" />
+                </figure>
+                <header class="product-card__header">
+                    <h2 class="product-card__title" itemprop="name">@p.Name</h2>
+                </header>
+                <div class="product-card__meta">
+                    <span class="product-card__sku">Артикул: @p.Sku</span>
+                    <span class="product-card__price"><span>@p.Price.ToString("0.00")</span> BYN</span>
+                </div>
+                <footer class="product-card__actions">
+                    <a class="btn btn--primary" href="@Url.Action("Product", "Catalog", new { slug = p.Slug })" aria-label="Подробнее о @p.Name">Подробнее</a>
+                </footer>
+            </article>
+        }
+    </div>
+</section>
