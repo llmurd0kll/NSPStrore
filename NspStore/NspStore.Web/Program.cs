@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NspStore.Application.Interfaces;
 using NspStore.Application.Services;
+using NspStore.Infrastructure.Data;
 using NspStore.Infrastructure.Identity;
 using NspStore.Infrastructure.Persistence;
 using NspStore.Web.Services;
@@ -57,6 +58,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await DbInitializer.SeedAsync(context, userManager, roleManager);
     await db.Database.MigrateAsync();
     await IdentitySeed.RunAsync(scope.ServiceProvider);
     await DataSeed.RunAsync(db);
