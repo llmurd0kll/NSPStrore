@@ -60,6 +60,31 @@
     display: none;
 }
 
+/* форма в навбаре должна вести себя как inline */
+.navbar__form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+/* кнопка "Выйти" выглядит как ссылка */
+.navbar__logout {
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    padding: 8px 10px; /* как у .navbar__link */
+    border-radius: var(--radius-6);
+    transition: background var(--transition-base);
+}
+
+    /* hover-эффект как у ссылок */
+    .navbar__logout:hover {
+        background: var(--color-bg-soft);
+    }
+
+
 /* Мобильное меню */
 @media (max-width: 768px) {
     /* скрываем меню */

@@ -8,6 +8,10 @@ using NspStore.Web.ViewModels;
 
 namespace NspStore.Web.Controllers
 {
+    /// <summary>
+    /// Контроллер для управления аккаунтом пользователя:
+    /// регистрация, вход, выход, профиль и заказы.
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {
@@ -25,7 +29,8 @@ namespace NspStore.Web.Controllers
             _db = db;
         }
 
-        // --- Регистрация и логин оставляем как есть ---
+        // --- Регистрация ---
+
         [HttpGet, AllowAnonymous]
         public IActionResult Register() => View(new RegisterVm());
 
@@ -44,6 +49,7 @@ namespace NspStore.Web.Controllers
             var result = await _users.CreateAsync(user, vm.Password);
             if (result.Succeeded)
             {
+                // Добавляем роль Customer (роль должна существовать в БД)
                 await _users.AddToRoleAsync(user, "Customer");
                 await _signIn.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
@@ -54,6 +60,8 @@ namespace NspStore.Web.Controllers
 
             return View(vm);
         }
+
+        // --- Логин ---
 
         [HttpGet, AllowAnonymous]
         public IActionResult Login(string? returnUrl = null) =>
@@ -74,6 +82,8 @@ namespace NspStore.Web.Controllers
             return View(vm);
         }
 
+        // --- Выход ---
+
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
@@ -83,22 +93,27 @@ namespace NspStore.Web.Controllers
         [AllowAnonymous]
         public IActionResult AccessDenied() => View();
 
-        // --- Новые действия ---
+        // --- Профиль ---
 
-        // Профиль
         public async Task<IActionResult> Profile()
         {
             var user = await _users.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
+            // Для диплома лучше сделать отдельный ProfileVm
             return View(user);
         }
 
-        // Мои заказы
+        // --- Мои заказы ---
+
         public async Task<IActionResult> Orders()
         {
             var user = await _users.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
             var orders = await _db.Orders
                 .Include(o => o.Items)
-                .Where(o => o.UserId == user!.Id)
+                .Where(o => o.UserId == user.Id)
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
 

@@ -39,33 +39,40 @@ namespace NspStore.Web.Controllers
             var cart = _cart.Get();
             if (!cart.Any()) return RedirectToAction("Index", "Catalog");
 
+            // Создаём заказ без Total
             var order = new Order
             {
                 UserId = user!.Id,
                 ShippingAddressId = shippingAddressId,
                 Comment = comment,
-                Status = Domain.Enums.OrderStatus.New,
-                Total = cart.Sum(i => i.Price * i.Qty)
+                Status = Domain.Enums.OrderStatus.New
             };
-            _db.Orders.Add(order);
-            await _db.SaveChangesAsync();
 
+            // Добавляем позиции заказа из корзины
             foreach (var i in cart)
             {
-                _db.OrderItems.Add(new OrderItem
+                var item = new OrderItem
                 {
-                    OrderId = order.Id,
                     ProductId = i.ProductId,
                     ProductName = i.Name,
                     UnitPrice = i.Price,
                     Quantity = i.Qty
-                });
+                };
+                item.RecalculateLineTotal(); // LineTotal = UnitPrice * Quantity
+                order.Items.Add(item);
             }
+
+            // Пересчитываем итоговую сумму заказа
+            order.RecalculateTotal();
+
+            // Сохраняем заказ и его позиции
+            _db.Orders.Add(order);
             await _db.SaveChangesAsync();
 
             _cart.Clear();
             return RedirectToAction("Success", new { id = order.Id });
         }
+
 
         public IActionResult Success(int id)
         {

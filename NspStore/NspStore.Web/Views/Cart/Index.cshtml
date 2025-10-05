@@ -1,14 +1,13 @@
-﻿@model List<NspStore.Web.Services.CartItemDto>
+﻿@model NspStore.Web.ViewModels.CartVm
 @{
     ViewData["Title"] = "Корзина";
-    var total = (decimal)ViewBag.Total;
 }
 
 <section class="section cart">
     <div class="container">
         <h1 class="h1">Корзина</h1>
 
-        @if (!Model.Any())
+        @if (!Model.Items.Any())
         {
             <p class="muted">Корзина пуста.</p>
             <div class="section__actions">
@@ -30,13 +29,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Items)
                     {
                         <tr>
                             <td>@item.Name</td>
                             <td>@item.Price.ToString("0.00") BYN</td>
                             <td>@item.Qty</td>
-                            <td>@(item.Price* item.Qty).ToString("0.00") BYN</td>
+                            <td>@item.LineTotal.ToString("0.00") BYN</td>
                             <td>
                                 <form method="post" asp-action="Remove" class="inline-form" aria-label="Удалить @item.Name из корзины">
                                     @Html.AntiForgeryToken()
@@ -50,7 +49,7 @@
             </table>
 
             <div class="cart__summary">
-                <p class="cart__total"><strong>Итого:</strong> @total.ToString("0.00") BYN</p>
+                <p class="cart__total"><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
 
                 <div class="cart__actions section__actions">
                     <form method="post" asp-action="Clear" class="inline-form">
@@ -66,3 +65,4 @@
         }
     </div>
 </section>
+

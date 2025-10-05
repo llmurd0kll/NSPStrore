@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NspStore.Domain.Entities;
+using NspStore.Infrastructure.Configurations;
 using NspStore.Infrastructure.Identity;
 
 namespace NspStore.Infrastructure.Persistence
 {
+    /// <summary>
+    /// Главный DbContext приложения NSP Store.
+    /// Содержит DbSet для всех сущностей и применяет конфигурации.
+    /// </summary>
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        // DbSet для доменных сущностей
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<ProductImage> ProductImages => Set<ProductImage>();
@@ -17,34 +23,17 @@ namespace NspStore.Infrastructure.Persistence
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
         public DbSet<Address> Addresses => Set<Address>();
 
-        protected override void OnModelCreating(ModelBuilder b)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(b);
+            base.OnModelCreating(builder);
 
-            b.Entity<Product>().HasIndex(x => x.Slug).IsUnique();
-            b.Entity<Category>().HasIndex(x => x.Slug).IsUnique();
-            b.Entity<ProductImage>().HasIndex(x => new { x.ProductId, x.SortOrder }).IsUnique();
-            b.Entity<OrderItem>().HasIndex(x => new { x.OrderId, x.ProductId });
-
-            // Связь Order.UserId -> AspNetUsers
-            b.Entity<Order>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
-                .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict)
-                ;
-
-            // Связь Address.UserId -> AspNetUsers
-            b.Entity<Address>()
-                .HasOne<ApplicationUser>()
-                .WithMany()
-                .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Явно указываем, что Order.Status хранится как int
-            b.Entity<Order>()
-                .Property(o => o.Status)
-                .HasConversion<int>();
+            // Подключаем все конфигурации
+            builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new AddressConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ProductImageConfiguration());
+            builder.ApplyConfiguration(new ProductAttributeConfiguration());
         }
     }
 }
