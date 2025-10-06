@@ -1,0 +1,38 @@
+﻿@model NspStore.Web.Areas.Admin.ViewModels.UserVm
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Редактировать пользователя";
+}
+
+<section class="section admin-users">
+    <div class="container">
+        <h1 class="h1">Редактировать пользователя</h1>
+
+        <form asp-action="Edit" method="post" class="form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Имя:</strong> @Model.FullName</p>
+
+            <div class="form__row">
+                <label class="form__label">Роли</label>
+                <div class="checkbox-list">
+                    @foreach (var role in new[] { "Customer", "Manager", "Admin" })
+                    {
+                        <label class="checkbox">
+                            <input type="checkbox" name="roles" value="@role"
+                                   @(Model.Roles.Contains(role) ? "checked" : "") />
+                            @role
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div class="form__actions">
+                <button type="submit" class="btn btn--primary">Сохранить</button>
+                <a class="btn btn--secondary" asp-action="Index">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>

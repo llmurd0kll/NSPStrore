@@ -8,4 +8,6 @@
         display: flex;
         justify-content: center;
         gap: var(--gap-16);
+        flex-wrap: wrap; /* чтобы кнопки переносились */
     }
+

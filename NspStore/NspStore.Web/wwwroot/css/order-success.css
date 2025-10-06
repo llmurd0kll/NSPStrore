@@ -1,6 +1,16 @@
-﻿.order-success {
+﻿/* ===========================
+   Успешное оформление заказа
+   =========================== */
+
+.order-success {
     text-align: center;
     padding: var(--gap-32) 0;
+}
+
+.order-success__icon {
+    font-size: 48px;
+    color: var(--color-success);
+    margin-bottom: var(--gap-16);
 }
 
 .order-success__text {
@@ -13,4 +23,5 @@
     justify-content: center;
     gap: var(--gap-16);
     margin-top: var(--gap-24);
+    flex-wrap: wrap;
 }

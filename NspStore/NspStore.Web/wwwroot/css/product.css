@@ -1,4 +1,8 @@
-﻿/* Сетка каталога */
+﻿/* ===========================
+   Каталог и карточка товара
+   =========================== */
+
+/* Сетка каталога */
 .catalog {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -42,7 +46,7 @@
     }
 
 .product-card__media {
-    aspect-ratio: 4/3; /* аккуратная пропорция */
+    aspect-ratio: 4/3;
     background: var(--color-bg-soft);
 }
 
@@ -66,6 +70,7 @@
 .product-card__price {
     font-weight: 700;
     font-size: var(--fs-16);
+    color: var(--color-text);
 }
 
 .product-card__actions {
@@ -74,6 +79,18 @@
     margin-top: var(--gap-8);
 }
 
+.product-card__btn {
+    flex: 1;
+}
+
+.product-card__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-14);
+    color: var(--color-muted);
+}
+
+/* Заголовок каталога */
 .catalog__header {
     display: flex;
     flex-direction: column;
@@ -85,22 +102,7 @@
     align-items: center;
 }
 
-.product-card__meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--fs-14);
-    color: var(--color-muted);
-}
-
-.product-card__price {
-    font-weight: 700;
-    color: var(--color-text);
-}
-
-
-.product-card__btn {
-    flex: 1;
-}
+/* Страница товара */
 .product__layout {
     display: grid;
     gap: var(--gap-24);

@@ -4,7 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - NSP Store</title>
+
+    <!-- Базовые стили -->
+    <link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/variables.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header class="header">
@@ -14,13 +22,10 @@
                 <a class="navbar__brand" asp-controller="Home" asp-action="Index">NSP Store</a>
 
                 <!-- Кнопка гамбургера -->
-                <button class="navbar__toggle" type="button"
-                        onclick="document.querySelector('.navbar__menu').classList.toggle('navbar__menu--open')">
-                    ☰
-                </button>
+                <button class="navbar__toggle" type="button" id="menuToggle">☰</button>
 
                 <!-- Навигация -->
-                <nav class="navbar__menu">
+                <nav class="navbar__menu" id="mainMenu">
                     @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                     {
                         <a class="navbar__link" asp-area="Admin" asp-controller="Products" asp-action="Index">
@@ -40,7 +45,6 @@
                             @Html.AntiForgeryToken()
                             <button type="submit" class="navbar__link navbar__logout">Выйти</button>
                         </form>
-
                     }
                     else
                     {
@@ -61,6 +65,12 @@
             <p>&copy; @DateTime.Now.Year — NSP Store</p>
         </div>
     </footer>
+
+    <!-- Скрипты -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

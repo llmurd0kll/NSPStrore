@@ -1,7 +1,9 @@
 ﻿.addresses__actions {
     display: flex;
     gap: var(--gap-8);
+    flex-wrap: wrap;
 }
+
 
 .inline-form {
     display: inline;

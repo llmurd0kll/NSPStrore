@@ -14,7 +14,15 @@
             <p><strong>Адрес доставки:</strong> @Model.ShippingAddress</p>
             <p>
                 <strong>Статус:</strong>
-                <span class="badge badge--@Model.Status.ToString().ToLower()">@Model.Status</span>
+                <span class="order-status @(Model.Status switch {
+                    OrderStatus.New => "order-status--new",
+                    OrderStatus.Confirmed => "order-status--paid",
+                    OrderStatus.Shipped => "order-status--shipped",
+                    OrderStatus.Cancelled => "order-status--cancelled",
+                    _ => "order-status--new"
+                })">
+                    @Model.Status
+                </span>
             </p>
         </div>
 

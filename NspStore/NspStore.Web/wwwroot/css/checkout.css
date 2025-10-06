@@ -1,8 +1,35 @@
-﻿.checkout .form {
-    margin-top: var(--gap-24);
-    max-width: 600px;
+﻿/* ===========================
+   Оформление заказа
+   =========================== */
+
+.checkout {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--gap-32) 0;
 }
 
-.checkout .section__actions {
-    margin-top: var(--gap-24);
+    .checkout .form {
+        margin-top: var(--gap-24);
+        max-width: 600px;
+    }
+
+    .checkout .section__actions {
+        margin-top: var(--gap-24);
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--gap-12);
+    }
+
+.checkout__summary {
+    margin-top: var(--gap-32);
+    padding: var(--gap-16);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-6);
+    background: var(--color-bg-soft);
+}
+
+.checkout__total {
+    font-size: var(--fs-18);
+    font-weight: 600;
+    text-align: right;
 }

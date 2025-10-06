@@ -1,4 +1,7 @@
-﻿/* Контейнер и базовые зоны */
+﻿/* ===========================
+   Layout: контейнер, хедер, футер, навбар, типографика
+   =========================== */
+
 .container {
     width: min(var(--container-max), 100% - 2rem);
     margin-inline: auto;
@@ -46,48 +49,33 @@
         background: var(--color-bg-soft);
     }
 
-/* Мобильное меню (простое переключение класса) */
-
-/* По умолчанию меню видно (десктоп) */
-.navbar__menu {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-16);
-}
-
-/* По умолчанию кнопку скрываем */
 .navbar__toggle {
     display: none;
 }
 
-/* форма в навбаре должна вести себя как inline */
 .navbar__form {
     display: inline;
     margin: 0;
     padding: 0;
 }
 
-/* кнопка "Выйти" выглядит как ссылка */
 .navbar__logout {
     background: none;
     border: none;
     font: inherit;
     color: inherit;
     cursor: pointer;
-    padding: 8px 10px; /* как у .navbar__link */
+    padding: 8px 10px;
     border-radius: var(--radius-6);
     transition: background var(--transition-base);
 }
 
-    /* hover-эффект как у ссылок */
     .navbar__logout:hover {
         background: var(--color-bg-soft);
     }
 
-
 /* Мобильное меню */
 @media (max-width: 768px) {
-    /* скрываем меню */
     .navbar__menu {
         display: none;
         flex-direction: column;
@@ -95,16 +83,14 @@
         padding: var(--gap-16) 0;
     }
 
-        /* показываем меню при открытии */
         .navbar__menu.navbar__menu--open {
             display: flex;
         }
 
-    /* показываем кнопку */
     .navbar__toggle {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--gap-8);
         padding: 8px 10px;
         border: 1px solid var(--color-border);
         border-radius: var(--radius-6);
@@ -112,7 +98,8 @@
         cursor: pointer;
     }
 }
-/* Основные заголовки и текст */
+
+/* Типографика */
 .h1, h1 {
     font-family: var(--font-heading);
     font-size: var(--fs-32);
