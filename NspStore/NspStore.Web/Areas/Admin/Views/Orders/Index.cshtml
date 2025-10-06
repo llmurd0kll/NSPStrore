@@ -2,35 +2,53 @@
 @using NspStore.Domain.Enums
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Заказы";
 }
 
+<section class="section admin-orders">
+    <div class="container">
+        <h1 class="h1">Заказы</h1>
 
-<h1 class="h1">Заказы</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>№</th>
-            <th>Дата</th>
-            <th>Адрес</th>
-            <th>Статус</th>
-            <th>Сумма</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var o in Model)
+        @if (!Model.Any())
         {
-            <tr>
-                <td>@o.Id</td>
-                <td>@o.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
-                <td>@o.ShippingAddress</td>
-                <td>@o.Status</td>
-                <td>@o.Total.ToString("0.00") BYN</td>
-                <td>
-                    <a class="btn btn--sm" asp-action="Details" asp-route-id="@o.Id">Подробнее</a>
-                </td>
-            </tr>
+            <div class="alert alert--info">
+                Заказов пока нет.
+            </div>
         }
-    </tbody>
-</table>
+        else
+        {
+            <table class="table table--admin">
+                <thead>
+                    <tr>
+                        <th class="ta-left">№</th>
+                        <th class="ta-left">Дата</th>
+                        <th class="ta-left">Адрес</th>
+                        <th class="ta-left">Статус</th>
+                        <th class="ta-right">Сумма</th>
+                        <th class="ta-right">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+                            <td>@o.Id</td>
+                            <td>@o.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@o.ShippingAddress</td>
+                            <td>
+                                <span class="badge badge--@o.Status.ToString().ToLower()">
+                                    @o.Status
+                                </span>
+                            </td>
+                            <td class="ta-right">@o.Total.ToString("0.00") BYN</td>
+                            <td class="ta-right actions">
+                                <a class="btn btn--sm" asp-action="Details" asp-route-id="@o.Id">Подробнее</a>
+                                <a class="btn btn--sm btn--danger" asp-action="Delete" asp-route-id="@o.Id">Удалить</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

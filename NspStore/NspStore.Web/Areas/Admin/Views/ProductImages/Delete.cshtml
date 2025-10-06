@@ -4,28 +4,29 @@
     ViewData["Title"] = "Удалить изображение";
 }
 
-<section class="section admin-product-image">
+<section class="section admin-product-images">
     <div class="container">
         <h1 class="h1">Удалить изображение</h1>
 
-        <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
-
-        <p class="warning-text">
+        <div class="warning-text">
             Вы уверены, что хотите удалить это изображение?
-        </p>
+        </div>
 
         <div class="preview">
-            <img src="@Model.Url" alt="Изображение товара" class="preview__img" />
-            <p class="muted">@Model.Url</p>
+            <img src="@Model.Url" alt="preview" class="preview__img" />
+            <p><strong>URL:</strong> @Model.Url</p>
+            <p><strong>Порядок:</strong> @Model.SortOrder</p>
         </div>
 
         <form asp-action="Delete" method="post" class="form">
-            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
-
             <div class="form__actions">
-                <button class="btn btn--danger" type="submit">Удалить</button>
-                <a class="btn" asp-action="Index" asp-route-productId="@Model.ProductId">Отмена</a>
+                <button type="submit" class="btn btn--danger">Удалить</button>
+                <a class="btn btn--secondary"
+                   asp-action="Index"
+                   asp-route-productId="@Model.ProductId">
+                    Отмена
+                </a>
             </div>
         </form>
     </div>

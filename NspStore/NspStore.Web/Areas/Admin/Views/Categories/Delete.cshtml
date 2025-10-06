@@ -17,10 +17,9 @@
         <form asp-action="Delete" method="post" class="form">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
-
             <div class="form__actions">
                 <button class="btn btn--danger" type="submit">Удалить</button>
-                <a class="btn" asp-action="Index">Отмена</a>
+                <a class="btn btn--secondary" asp-action="Index">Отмена</a>
             </div>
         </form>
     </div>

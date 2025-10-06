@@ -2,8 +2,8 @@
 @using NspStore.Domain.Enums
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = $"Заказ №{Model.Id}";
 }
-
 
 <section class="section admin-order">
     <div class="container">
@@ -11,7 +11,7 @@
 
         <div class="admin-order__info">
             <p><strong>Дата:</strong> @Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
-            <p><strong>Адрес:</strong> @Model.ShippingAddress</p>
+            <p><strong>Адрес доставки:</strong> @Model.ShippingAddress</p>
             <p>
                 <strong>Статус:</strong>
                 <span class="badge badge--@Model.Status.ToString().ToLower()">@Model.Status</span>
@@ -19,13 +19,13 @@
         </div>
 
         <h2 class="h2">Товары</h2>
-        <table class="table admin-order__items">
+        <table class="table table--admin admin-order__items">
             <thead>
                 <tr>
-                    <th>Название</th>
-                    <th>Цена</th>
-                    <th>Кол-во</th>
-                    <th>Сумма</th>
+                    <th class="ta-left">Название</th>
+                    <th class="ta-right">Цена</th>
+                    <th class="ta-right">Кол-во</th>
+                    <th class="ta-right">Сумма</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,22 +33,25 @@
                 {
                     <tr>
                         <td>@i.ProductName</td>
-                        <td>@i.Price.ToString("0.00") BYN</td>
-                        <td>@i.Qty</td>
-                        <td>@i.LineTotal.ToString("0.00") BYN</td>
+                        <td class="ta-right">@i.Price.ToString("0.00") BYN</td>
+                        <td class="ta-right">@i.Qty</td>
+                        <td class="ta-right">@i.LineTotal.ToString("0.00") BYN</td>
                     </tr>
                 }
             </tbody>
         </table>
 
-        <p class="admin-order__total"><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
+        <p class="admin-order__total">
+            <strong>Итого:</strong> @Model.Total.ToString("0.00") BYN
+        </p>
 
         <h2 class="h2">Статус заказа</h2>
         <form asp-action="ChangeStatus" method="post" class="form">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@Model.Id" />
             <div class="form__row">
-                <select name="status">
+                <label for="status" class="form__label">Изменить статус</label>
+                <select id="status" name="status" class="input">
                     @foreach (OrderStatus s in Enum.GetValues(typeof(OrderStatus)))
                     {
                         <option value="@((int)s)" selected="@(s == Model.Status)">@s</option>
@@ -57,6 +60,7 @@
             </div>
             <div class="form__actions">
                 <button type="submit" class="btn btn--primary">Обновить</button>
+                <a class="btn btn--secondary" asp-action="Index">Назад к заказам</a>
             </div>
         </form>
     </div>

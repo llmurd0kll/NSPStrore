@@ -14,20 +14,20 @@
             <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
 
             <div class="form__row">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" />
+                <label asp-for="Name" class="form__label"></label>
+                <input asp-for="Name" class="input" />
                 <span class="input__error" asp-validation-for="Name"></span>
             </div>
 
             <div class="form__row">
-                <label asp-for="Slug">Slug (необязательно)</label>
-                <input asp-for="Slug" />
+                <label asp-for="Slug" class="form__label">Slug (необязательно)</label>
+                <input asp-for="Slug" class="input" />
                 <span class="input__error" asp-validation-for="Slug"></span>
             </div>
 
             <div class="form__actions">
                 <button class="btn btn--primary" type="submit">Сохранить</button>
-                <a class="btn" asp-action="Index">Отмена</a>
+                <a class="btn btn--secondary" asp-action="Index">Отмена</a>
             </div>
         </form>
     </div>
