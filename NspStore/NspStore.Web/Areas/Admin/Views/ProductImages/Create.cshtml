@@ -1,0 +1,39 @@
+﻿@model NspStore.Domain.Entities.ProductImage
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Добавить изображение";
+}
+
+<section class="section admin-product-image">
+    <div class="container">
+        <h1 class="h1">Добавить изображение</h1>
+
+        <form asp-action="Create" method="post" class="form" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ProductId" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
+
+            <div class="form__row">
+                <label asp-for="Url"></label>
+                <input asp-for="Url" />
+                <span class="input__error" asp-validation-for="Url"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="SortOrder"></label>
+                <input asp-for="SortOrder" type="number" />
+                <span class="input__error" asp-validation-for="SortOrder"></span>
+            </div>
+
+            <div class="form__actions">
+                <button class="btn btn--primary" type="submit">Сохранить</button>
+                <a class="btn" asp-action="Index" asp-route-productId="@Model.ProductId">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

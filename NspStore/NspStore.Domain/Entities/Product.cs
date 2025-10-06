@@ -11,6 +11,7 @@
         /// </summary>
         public int Id { get; set; }
 
+
         /// <summary>
         /// Артикул (SKU) — уникальный код товара.
         /// Используется для внутреннего учёта и поиска.
@@ -58,7 +59,7 @@
         /// <summary>
         /// Внешний ключ на категорию (nullable).
         /// </summary>
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         /// <summary>
         /// Навигационное свойство: категория товара.

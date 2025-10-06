@@ -30,11 +30,11 @@ namespace NspStore.Web.Controllers
         }
 
         // --- Регистрация ---
-
         [HttpGet, AllowAnonymous]
         public IActionResult Register() => View(new RegisterVm());
 
         [HttpPost, AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVm vm)
         {
             if (!ModelState.IsValid) return View(vm);
@@ -62,28 +62,41 @@ namespace NspStore.Web.Controllers
         }
 
         // --- Логин ---
-
         [HttpGet, AllowAnonymous]
         public IActionResult Login(string? returnUrl = null) =>
             View(new LoginVm { ReturnUrl = returnUrl });
 
         [HttpPost, AllowAnonymous]
-        public async Task<IActionResult> Login(LoginVm vm)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVm model, string? returnUrl = null)
         {
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid) return View(model);
 
             var result = await _signIn.PasswordSignInAsync(
-                vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: true);
+                model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
-                return Redirect(vm.ReturnUrl ?? Url.Action("Index", "Home")!);
+            {
+                var user = await _users.FindByEmailAsync(model.Email);
+                var roles = await _users.GetRolesAsync(user);
 
-            ModelState.AddModelError(string.Empty, "Неверная почта или пароль");
-            return View(vm);
+                // Если админ или менеджер → сразу в админку
+                if (roles.Contains("Admin") || roles.Contains("Manager"))
+                {
+                    return RedirectToAction("Index", "Products", new { area = "Admin" });
+                }
+
+                // иначе обычный редирект
+                return RedirectToLocal(returnUrl);
+            }
+
+            ModelState.AddModelError("", "Неверный логин или пароль");
+            return View(model);
         }
 
         // --- Выход ---
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
@@ -94,7 +107,6 @@ namespace NspStore.Web.Controllers
         public IActionResult AccessDenied() => View();
 
         // --- Профиль ---
-
         public async Task<IActionResult> Profile()
         {
             var user = await _users.GetUserAsync(User);
@@ -105,7 +117,6 @@ namespace NspStore.Web.Controllers
         }
 
         // --- Мои заказы ---
-
         public async Task<IActionResult> Orders()
         {
             var user = await _users.GetUserAsync(User);
@@ -118,6 +129,19 @@ namespace NspStore.Web.Controllers
                 .ToListAsync();
 
             return View(orders);
+        }
+
+        // --- Вспомогательный метод ---
+        private IActionResult RedirectToLocal(string? returnUrl)
+        {
+            if (!string.IsNullOrEmpty(returnUrl)
+                && Url.IsLocalUrl(returnUrl)
+                && !returnUrl.Contains("/Account/Login", StringComparison.OrdinalIgnoreCase))
+            {
+                return Redirect(returnUrl);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -1,51 +1,57 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using NspStore.Domain.Entities;
 using NspStore.Domain.Enums;
+using NspStore.Infrastructure.Data;
 using NspStore.Infrastructure.Persistence;
 using NspStore.Web.Areas.Admin.ViewModels;
 
 namespace NspStore.Web.Areas.Admin.Controllers
 {
-    /// <summary>
-    /// Контроллер для управления заказами в административной панели.
-    /// Доступен только пользователям с политикой RequireManager.
-    /// </summary>
     [Area("Admin")]
-    [Authorize(Policy = "RequireManager")]
+    [Authorize(Roles = "Admin,Manager")]
     public class OrdersController : Controller
     {
         private readonly AppDbContext _db;
-        private readonly ILogger<OrdersController> _logger;
+        public OrdersController(AppDbContext db) => _db = db;
 
-        public OrdersController(AppDbContext db, ILogger<OrdersController> logger)
-        {
-            _db = db;
-            _logger = logger;
-        }
-
-        /// <summary>
-        /// Список всех заказов (с сортировкой по дате).
-        /// </summary>
+        // GET: Admin/Orders
         public async Task<IActionResult> Index()
         {
             var orders = await _db.Orders
                 .Include(o => o.Items)
+                .ThenInclude(i => i.Product)
+                .Include(o => o.ShippingAddress)
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
 
-            return View(orders);
+            var vm = orders.Select(o => new OrderVm
+            {
+                Id = o.Id,
+                CreatedAt = o.CreatedAt,
+                Status = o.Status,
+                Total = o.Items.Sum(i => i.UnitPrice * i.Quantity),
+                ShippingAddress = o.ShippingAddress != null
+                    ? $"{o.ShippingAddress.City}, {o.ShippingAddress.Street}"
+                    : "—",
+                Items = o.Items.Select(i => new OrderItemVm
+                {
+                    ProductId = i.ProductId,
+                    ProductName = i.Product.Name,
+                    Price = i.UnitPrice,
+                    Qty = i.Quantity
+                }).ToList()
+            }).ToList();
+
+            return View(vm);
         }
 
-        /// <summary>
-        /// Детали конкретного заказа.
-        /// </summary>
+        // GET: Admin/Orders/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var order = await _db.Orders
-                .Include(o => o.Items).ThenInclude(i => i.Product)
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Product)
                 .Include(o => o.ShippingAddress)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
@@ -57,9 +63,9 @@ namespace NspStore.Web.Areas.Admin.Controllers
                 CreatedAt = order.CreatedAt,
                 Status = order.Status,
                 Total = order.Items.Sum(i => i.UnitPrice * i.Quantity),
-                ShippingAddress = order.ShippingAddress == null
-                    ? string.Empty
-                    : $"{order.ShippingAddress.Country}, {order.ShippingAddress.City}, {order.ShippingAddress.Street} {order.ShippingAddress.Apartment}, {order.ShippingAddress.PostalCode}",
+                ShippingAddress = order.ShippingAddress != null
+                    ? $"{order.ShippingAddress.City}, {order.ShippingAddress.Street}"
+                    : "—",
                 Items = order.Items.Select(i => new OrderItemVm
                 {
                     ProductId = i.ProductId,
@@ -72,32 +78,24 @@ namespace NspStore.Web.Areas.Admin.Controllers
             return View(vm);
         }
 
-
-        /// <summary>
-        /// Изменение статуса заказа.
-        /// </summary>
+        // POST: Admin/Orders/ChangeStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeStatus(int id, int status)
+        public async Task<IActionResult> ChangeStatus(int id, OrderStatus status)
         {
-            var order = await _db.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            var order = await _db.Orders.FindAsync(id);
             if (order == null) return NotFound();
 
-            // Проверяем, что статус корректный
             if (!Enum.IsDefined(typeof(OrderStatus), status))
             {
-                _logger.LogWarning("Попытка установить некорректный статус {Status} для заказа {OrderId}", status, id);
-                return BadRequest("Некорректный статус заказа");
+                TempData["Error"] = "Недопустимый статус.";
+                return RedirectToAction(nameof(Details), new { id });
             }
 
-            var oldStatus = order.Status;
-            order.Status = (OrderStatus)status;
-
-            _db.Orders.Update(order);
+            order.Status = status;
             await _db.SaveChangesAsync();
 
-            _logger.LogInformation("Статус заказа {OrderId} изменён с {OldStatus} на {NewStatus}", id, oldStatus, order.Status);
-
+            TempData["Success"] = "Статус обновлён.";
             return RedirectToAction(nameof(Details), new { id });
         }
     }

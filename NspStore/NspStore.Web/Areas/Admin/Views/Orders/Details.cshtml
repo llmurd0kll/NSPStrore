@@ -1,8 +1,9 @@
-﻿@model NspStore.Domain.Entities.Order
+﻿@model NspStore.Web.Areas.Admin.ViewModels.OrderVm
 @using NspStore.Domain.Enums
 @{
-    ViewData["Title"] = "Заказ " + Model.Id;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 
 <section class="section admin-order">
     <div class="container">
@@ -10,35 +11,10 @@
 
         <div class="admin-order__info">
             <p><strong>Дата:</strong> @Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
-            <p><strong>Пользователь:</strong> @Model.UserId</p>
-            <p><strong>Адрес:</strong> @(Model.ShippingAddress != null ? $"{Model.ShippingAddress.City}, {Model.ShippingAddress.Street}" : "—")</p>
-            <p><strong>Комментарий:</strong> @Model.Comment</p>
+            <p><strong>Адрес:</strong> @Model.ShippingAddress</p>
             <p>
                 <strong>Статус:</strong>
-                @{
-                    string statusText = Model.Status switch
-                    {
-                        OrderStatus.New => "Новый",
-                        OrderStatus.Confirmed => "Подтверждён",
-                        OrderStatus.Packed => "Упакован",
-                        OrderStatus.Shipped => "Отгружен",
-                        OrderStatus.Completed => "Завершён",
-                        OrderStatus.Cancelled => "Отменён",
-                        _ => Model.Status.ToString()
-                    };
-
-                    string badgeClass = Model.Status switch
-                    {
-                        OrderStatus.New => "badge--neutral",
-                        OrderStatus.Confirmed => "badge--warning",
-                        OrderStatus.Packed => "badge--warning",
-                        OrderStatus.Shipped => "badge--warning",
-                        OrderStatus.Completed => "badge--success",
-                        OrderStatus.Cancelled => "badge--danger",
-                        _ => "badge--neutral"
-                    };
-                }
-                <span class="badge @badgeClass">@statusText</span>
+                <span class="badge badge--@Model.Status.ToString().ToLower()">@Model.Status</span>
             </p>
         </div>
 
@@ -57,9 +33,9 @@
                 {
                     <tr>
                         <td>@i.ProductName</td>
-                        <td>@i.UnitPrice.ToString("0.00") BYN</td>
-                        <td>@i.Quantity</td>
-                        <td>@(i.UnitPrice* i.Quantity).ToString("0.00") BYN</td>
+                        <td>@i.Price.ToString("0.00") BYN</td>
+                        <td>@i.Qty</td>
+                        <td>@i.LineTotal.ToString("0.00") BYN</td>
                     </tr>
                 }
             </tbody>
@@ -67,26 +43,20 @@
 
         <p class="admin-order__total"><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
 
-        <h2 class="h2">Изменить статус</h2>
-        <form method="post" asp-area="Admin" asp-controller="Orders" asp-action="ChangeStatus" class="form">
+        <h2 class="h2">Статус заказа</h2>
+        <form asp-action="ChangeStatus" method="post" class="form">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@Model.Id" />
-
             <div class="form__row">
-                <label for="status" class="form__label">Статус</label>
-                <select id="status" name="status" class="form__select">
+                <select name="status">
                     @foreach (OrderStatus s in Enum.GetValues(typeof(OrderStatus)))
                     {
-                        <option value="@((int)s)" selected="@(Model.Status == s ? "selected" : null)">
-                            @s
-                        </option>
+                        <option value="@((int)s)" selected="@(s == Model.Status)">@s</option>
                     }
                 </select>
             </div>
-
-            <div class="section__actions">
-                <button type="submit" class="btn btn--primary">Сохранить</button>
-                <a class="btn btn--secondary" asp-action="Index">Назад к списку</a>
+            <div class="form__actions">
+                <button type="submit" class="btn btn--primary">Обновить</button>
             </div>
         </form>
     </div>

@@ -21,6 +21,12 @@
 
                 <!-- Навигация -->
                 <nav class="navbar__menu">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+                        <a class="navbar__link" asp-area="Admin" asp-controller="Products" asp-action="Index">
+                            Администрирование
+                        </a>
+                    }
                     <a class="navbar__link" asp-controller="Catalog" asp-action="Index">Каталог</a>
                     <a class="navbar__link" asp-controller="Cart" asp-action="Index">Корзина</a>
 

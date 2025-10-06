@@ -1,0 +1,38 @@
+﻿@model NspStore.Domain.Entities.Category
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Создать категорию";
+}
+
+<section class="section admin-category">
+    <div class="container">
+        <h1 class="h1">Создать категорию</h1>
+
+        <form asp-action="Create" method="post" class="form" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
+
+            <div class="form__row">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+                <span class="input__error" asp-validation-for="Name"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Slug">Slug (необязательно)</label>
+                <input asp-for="Slug" />
+                <span class="input__error" asp-validation-for="Slug"></span>
+            </div>
+
+            <div class="form__actions">
+                <button class="btn btn--primary" type="submit">Сохранить</button>
+                <a class="btn" asp-action="Index">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

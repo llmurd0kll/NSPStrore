@@ -1,0 +1,32 @@
+﻿@model NspStore.Domain.Entities.ProductImage
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Удалить изображение";
+}
+
+<section class="section admin-product-image">
+    <div class="container">
+        <h1 class="h1">Удалить изображение</h1>
+
+        <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
+
+        <p class="warning-text">
+            Вы уверены, что хотите удалить это изображение?
+        </p>
+
+        <div class="preview">
+            <img src="@Model.Url" alt="Изображение товара" class="preview__img" />
+            <p class="muted">@Model.Url</p>
+        </div>
+
+        <form asp-action="Delete" method="post" class="form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form__actions">
+                <button class="btn btn--danger" type="submit">Удалить</button>
+                <a class="btn" asp-action="Index" asp-route-productId="@Model.ProductId">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>
