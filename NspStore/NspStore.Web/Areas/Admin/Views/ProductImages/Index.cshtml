@@ -1,0 +1,69 @@
+﻿@model IEnumerable<NspStore.Domain.Entities.ProductImage>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Изображения товара";
+    var productId = ViewBag.ProductId as int? ?? 0;
+    var productName = ViewBag.ProductName as string ?? "Товар";
+}
+
+<section class="section admin-product-images">
+    <div class="container">
+        <h1 class="h1">Изображения: @productName</h1>
+
+        <div class="toolbar toolbar--between">
+            <a class="btn btn--primary"
+               asp-action="Create"
+               asp-route-productId="@productId">
+                Добавить изображение
+            </a>
+            <a class="btn btn--secondary"
+               asp-area="Admin"
+               asp-controller="Products"
+               asp-action="Index">
+                ← Назад к товарам
+            </a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert--info">
+                Для этого товара пока нет изображений.
+            </div>
+        }
+        else
+        {
+            <table class="table table--admin">
+                <thead>
+                    <tr>
+                        <th class="ta-left">Id</th>
+                        <th class="ta-left">Превью</th>
+                        <th class="ta-left">URL</th>
+                        <th class="ta-left">Порядок</th>
+                        <th class="ta-right">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var img in Model)
+                    {
+                        <tr>
+                            <td>@img.Id</td>
+                            <td>
+                                <img src="@img.Url" alt="preview"
+                                     class="preview__img" />
+                            </td>
+                            <td>@img.Url</td>
+                            <td>@img.SortOrder</td>
+                            <td class="ta-right actions">
+                                <a class="btn btn--sm btn--danger"
+                                   asp-action="Delete"
+                                   asp-route-id="@img.Id">
+                                    Удалить
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

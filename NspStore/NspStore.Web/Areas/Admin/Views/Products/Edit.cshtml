@@ -1,0 +1,90 @@
+﻿@model NspStore.Web.Areas.Admin.ViewModels.ProductEditVm
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Редактировать товар";
+}
+
+<section class="section admin-product">
+    <div class="container">
+        <h1 class="h1">Редактировать товар</h1>
+
+        <form asp-action="Edit" method="post" class="form" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
+
+            <div class="form__row">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Slug"></label>
+                <input asp-for="Slug" />
+                <span asp-validation-for="Slug" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Sku"></label>
+                <input asp-for="Sku" />
+                <span asp-validation-for="Sku" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" />
+                <span asp-validation-for="Price" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="ShortDescription"></label>
+                <textarea asp-for="ShortDescription"></textarea>
+                <span asp-validation-for="ShortDescription" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="CategoryId"></label>
+                <select asp-for="CategoryId">
+                    @foreach (var c in Model.CategoryOptions)
+                    {
+                        <option value="@c.Id" selected="@(c.Id == Model.CategoryId)">
+                            @c.Name
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label>Изображения</label>
+                @if (Model.Images.Any())
+                {
+                    <ul class="image-list">
+                        @foreach (var img in Model.Images)
+                        {
+                            <li class="image-list__item">
+                                <img src="@img.Url" alt="Product image" class="preview__img" />
+                                <span class="muted">@img.Url</span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="muted">Нет изображений</p>
+                }
+            </div>
+
+            <div class="form__actions">
+                <button class="btn btn--primary" type="submit">Сохранить</button>
+                <a class="btn" asp-action="Index">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+  
+}

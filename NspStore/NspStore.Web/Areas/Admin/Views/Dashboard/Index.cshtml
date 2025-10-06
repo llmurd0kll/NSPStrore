@@ -1,0 +1,123 @@
+﻿@model NspStore.Web.Areas.Admin.ViewModels.DashboardStatsVm
+@using NspStore.Domain.Enums
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" />
+}
+
+<section class="section admin-dashboard">
+    <div class="container">
+        <h1 class="h1">Панель управления</h1>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-card__label">Товары</div>
+                <div class="kpi-card__value">@Model.ProductsCount</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-card__label">Категории</div>
+                <div class="kpi-card__value">@Model.CategoriesCount</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-card__label">Пользователи</div>
+                <div class="kpi-card__value">@Model.UsersCount</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-card__label">Заказы</div>
+                <div class="kpi-card__value">@Model.OrdersCount</div>
+            </div>
+            <div class="kpi-card kpi-card--accent">
+                <div class="kpi-card__label">Выручка (опл/отгр)</div>
+                <div class="kpi-card__value">@Model.TotalRevenue.ToString("0.00") BYN</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Recent orders -->
+            <section class="dashboard-card">
+                <div class="dashboard-card__header">
+                    <h2 class="h2">Последние заказы</h2>
+                    <a class="btn btn--secondary" asp-area="Admin" asp-controller="Orders" asp-action="Index">Все заказы</a>
+                </div>
+                @if (!Model.RecentOrders.Any())
+                {
+                    <div class="muted">Нет данных</div>
+                }
+                else
+                {
+                    <table class="table table--admin">
+                        <thead>
+                            <tr>
+                                <th class="ta-left">№</th>
+                                <th class="ta-left">Дата</th>
+                                <th class="ta-left">Статус</th>
+                                <th class="ta-left">Адрес</th>
+                                <th class="ta-right">Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var o in Model.RecentOrders)
+                        {
+                            <tr class="@(o.Status == OrderStatus.New ? "row--highlight" : "")">
+                                <td>@o.Id</td>
+                                <td>@o.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>
+                                    <span class="order-status @(o.Status switch {
+                                        OrderStatus.New => "order-status--new",
+                                        OrderStatus.Confirmed => "order-status--paid",
+                                        OrderStatus.Shipped => "order-status--shipped",
+                                        OrderStatus.Cancelled => "order-status--cancelled",
+                                        _ => "order-status--new"
+                                    })">@o.Status</span>
+                                </td>
+                                <td class="muted">@o.ShippingAddress</td>
+                                <td class="ta-right">@o.Total.ToString("0.00") BYN</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </section>
+
+            <!-- Top products -->
+            <section class="dashboard-card">
+                <div class="dashboard-card__header">
+                    <h2 class="h2">Топ товаров (30 дней)</h2>
+                    <a class="btn btn--secondary" asp-area="Admin" asp-controller="Products" asp-action="Index">Товары</a>
+                </div>
+
+                @if (!Model.TopProducts.Any())
+                {
+                    <div class="muted">Нет данных</div>
+                }
+                else
+                {
+                    <table class="table table--admin">
+                        <thead>
+                            <tr>
+                                <th class="ta-left">Товар</th>
+                                <th class="ta-right">Кол-во</th>
+                                <th class="ta-right">Выручка</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var p in Model.TopProducts)
+                        {
+                            <tr>
+                                <td>@p.Name</td>
+                                <td class="ta-right">@p.Quantity</td>
+                                <td class="ta-right">@p.Revenue.ToString("0.00") BYN</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </section>
+        </div>
+    </div>
+</section>

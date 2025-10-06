@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+    var title = ViewData["Title"] ?? "Админка";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <title>@title - NSP Store Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Базовые стили -->
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/variables.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+    <link rel="stylesheet" href="~/css/components.css" />
+    <link rel="stylesheet" href="~/css/admin.css" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header class="admin-header">
+        <div class="container admin-header__inner">
+            <div class="admin-header__brand">
+                <a asp-area="Admin" asp-controller="Products" asp-action="Index">
+                    NSP Store Admin
+                </a>
+            </div>
+            <div class="admin-header__account">
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn--sm btn--secondary">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav class="admin-menu">
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">📊 Dashboard</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Products" asp-action="Index">📦 Товары</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Categories" asp-action="Index">📂 Категории</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Orders" asp-action="Index">🧾 Заказы</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Users" asp-action="Index">👤 Пользователи</a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="admin-main">
+            <div class="container">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <footer class="admin-footer">
+        <div class="container">
+            <p class="muted">© @DateTime.Now.Year NSP Store Admin</p>
+        </div>
+    </footer>
+
+    <!-- Сначала jQuery -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+
+    <!-- Потом validate -->
+    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

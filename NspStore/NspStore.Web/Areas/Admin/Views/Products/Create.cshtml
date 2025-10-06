@@ -1,0 +1,66 @@
+﻿@model NspStore.Web.Areas.Admin.ViewModels.ProductEditVm
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Создать товар";
+}
+
+<section class="section admin-product">
+    <div class="container">
+        <h1 class="h1">Создать товар</h1>
+
+        <form asp-action="Create" method="post" class="form" novalidate>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
+
+            <div class="form__row">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+                <span asp-validation-for="Name" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Slug"></label>
+                <input asp-for="Slug" />
+                <span asp-validation-for="Slug" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Sku"></label>
+                <input asp-for="Sku" />
+                <span asp-validation-for="Sku" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" />
+                <span asp-validation-for="Price" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="ShortDescription"></label>
+                <textarea asp-for="ShortDescription"></textarea>
+                <span asp-validation-for="ShortDescription" class="input__error"></span>
+            </div>
+
+            <div class="form__row">
+                <label asp-for="CategoryId"></label>
+                <select asp-for="CategoryId">
+                    @foreach (var c in Model.CategoryOptions)
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="input__error"></span>
+            </div>
+
+            <div class="form__actions">
+                <button class="btn btn--primary" type="submit">Сохранить</button>
+                <a class="btn" asp-action="Index">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+}

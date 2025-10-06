@@ -1,0 +1,24 @@
+﻿@model NspStore.Infrastructure.Identity.ApplicationUser
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<section class="section profile">
+    <div class="container">
+        <h1 class="h1">Профиль</h1>
+
+        <div class="profile__info">
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Имя:</strong> @Model.FullName</p>
+        </div>
+
+        <div class="section__actions profile__actions">
+            <a class="btn btn--primary" asp-controller="Addresses" asp-action="Index">
+                Мои адреса
+            </a>
+            <a class="btn btn--secondary" asp-controller="Account" asp-action="Orders">
+                Мои заказы
+            </a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,26 @@
+﻿/* ===========================
+   Страницы авторизации/регистрации
+   =========================== */
+
+.auth {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: var(--gap-32) 0;
+}
+
+.auth__title {
+    text-align: center;
+    margin-bottom: var(--gap-24);
+}
+
+.auth__form {
+    display: grid;
+    gap: var(--gap-16);
+}
+
+.auth__actions {
+    margin-top: var(--gap-24);
+    display: flex;
+    justify-content: center;
+    gap: var(--gap-12);
+}

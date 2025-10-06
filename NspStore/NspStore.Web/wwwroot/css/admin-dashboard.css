@@ -1,0 +1,107 @@
+﻿/* ===========================
+   Admin Dashboard
+   =========================== */
+
+.admin-dashboard {
+    padding: var(--gap-24) 0;
+}
+
+/* KPI cards */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap-16);
+    margin-bottom: var(--gap-24);
+}
+
+@media (min-width: var(--bp-md)) {
+    .kpi-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.kpi-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-6);
+    padding: var(--gap-16);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-1);
+}
+
+.kpi-card__label {
+    font-size: var(--fs-14);
+    color: var(--color-muted);
+    margin-bottom: var(--gap-8);
+}
+
+.kpi-card__value {
+    font-size: var(--fs-24);
+    font-weight: 700;
+}
+
+.kpi-card--accent {
+    background: var(--color-bg-soft);
+    border-color: var(--color-border);
+}
+
+/* Cards grid */
+.dashboard-grid {
+    display: grid;
+    gap: var(--gap-24);
+}
+
+@media (min-width: var(--bp-md)) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+.dashboard-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-6);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-1);
+    padding: var(--gap-16);
+}
+
+.dashboard-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gap-12);
+}
+
+/* Reuse from admin-orders */
+.row--highlight {
+    background: #F0F9FF;
+}
+
+/* Order status badges (reuse classes) */
+.order-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-4);
+    font-size: var(--fs-12);
+    font-weight: 500;
+}
+
+.order-status--new {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.order-status--paid {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.order-status--shipped {
+    background: #FEF9C3;
+    color: #92400E;
+}
+
+.order-status--cancelled {
+    background: #FEE2E2;
+    color: #991B1B;
+}

@@ -1,0 +1,105 @@
+﻿/* ===========================
+   Стили для заказов в админке
+   =========================== */
+
+/* Таблица заказов */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--gap-24);
+    font-size: var(--fs-14);
+}
+
+    .orders-table th,
+    .orders-table td {
+        padding: var(--gap-12) var(--gap-16);
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: middle;
+    }
+
+    .orders-table th {
+        font-weight: 600;
+        background: var(--color-bg-soft);
+        text-align: left;
+    }
+
+    .orders-table .actions {
+        display: flex;
+        gap: var(--gap-8);
+        justify-content: flex-end;
+    }
+
+/* Подсветка новых заказов */
+.row--highlight {
+    background: #F0F9FF;
+}
+
+/* Статусы заказов */
+.order-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-4);
+    font-size: var(--fs-12);
+    font-weight: 500;
+}
+
+.order-status--new {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.order-status--paid {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.order-status--shipped {
+    background: #FEF9C3;
+    color: #92400E;
+}
+
+.order-status--cancelled {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* Toolbar */
+.orders-toolbar {
+    display: flex;
+    gap: var(--gap-12);
+    margin-bottom: var(--gap-16);
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Детали заказа */
+.admin-order__info {
+    margin-bottom: var(--gap-24);
+    display: grid;
+    gap: var(--gap-8);
+    font-size: var(--fs-14);
+}
+
+.admin-order__items {
+    margin-top: var(--gap-16);
+}
+
+.admin-order__total {
+    margin-top: var(--gap-16);
+    font-size: var(--fs-16);
+    font-weight: 600;
+    text-align: right;
+}
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .orders-table {
+        font-size: var(--fs-12);
+    }
+
+        .orders-table th,
+        .orders-table td {
+            padding: var(--gap-8);
+        }
+}

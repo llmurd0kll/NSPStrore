@@ -1,0 +1,218 @@
+﻿/* ===========================
+   Общие стили админки NSP Store
+   =========================== */
+
+/* Таблицы */
+.table--admin {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--gap-24);
+    font-size: var(--fs-14);
+}
+
+    .table--admin th,
+    .table--admin td {
+        padding: var(--gap-12) var(--gap-16);
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: middle;
+    }
+
+    .table--admin th {
+        font-weight: 600;
+        background: var(--color-bg-soft);
+        text-align: left;
+    }
+
+    .table--admin .actions {
+        display: flex;
+        gap: var(--gap-8);
+        justify-content: flex-end;
+    }
+
+/* Выравнивание */
+.ta-left {
+    text-align: left;
+}
+
+.ta-right {
+    text-align: right;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    gap: var(--gap-12);
+    margin-bottom: var(--gap-16);
+}
+
+.toolbar--between {
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Формы */
+.form {
+    display: grid;
+    gap: var(--gap-16);
+    max-width: 600px;
+}
+
+.form__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-8);
+}
+
+.form__actions {
+    display: flex;
+    gap: var(--gap-12);
+    margin-top: var(--gap-16);
+}
+
+/* Ошибки и уведомления */
+.input__error {
+    color: var(--color-danger);
+    font-size: var(--fs-12);
+}
+
+.alert {
+    padding: var(--gap-12) var(--gap-16);
+    border-radius: var(--radius-6);
+    margin-bottom: var(--gap-16);
+    font-size: var(--fs-14);
+}
+
+.alert--error {
+    background: #FEE2E2;
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+}
+
+.alert--success {
+    background: #DCFCE7;
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.alert--info {
+    background: #DBEAFE;
+    color: #1E3A8A;
+    border: 1px solid #60A5FA;
+}
+
+.alert--warning {
+    background: #FEF9C3;
+    color: #92400E;
+    border: 1px solid #FACC15;
+}
+
+/* Предупреждающий текст */
+.warning-text {
+    color: var(--color-danger);
+    font-weight: 500;
+    margin-bottom: var(--gap-16);
+}
+
+/* Превью изображений */
+.preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-8);
+}
+
+.preview__img {
+    max-height: 80px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-4);
+    box-shadow: var(--shadow-1);
+}
+
+/* Список изображений */
+.image-list {
+    display: grid;
+    gap: var(--gap-12);
+}
+
+.image-list__item {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-12);
+}
+
+/* Layout админки */
+.admin-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: calc(100vh - 60px);
+}
+
+.admin-sidebar {
+    background: var(--color-bg-soft);
+    border-right: 1px solid var(--color-border);
+    padding: var(--gap-24) var(--gap-16);
+}
+
+.admin-menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-12);
+}
+
+.admin-menu__link {
+    display: block;
+    padding: var(--gap-8) var(--gap-12);
+    border-radius: var(--radius-6);
+    transition: background var(--transition-base);
+    font-weight: 500;
+}
+
+    .admin-menu__link:hover,
+    .admin-menu__link.active {
+        background: var(--color-primary);
+        color: #fff;
+    }
+
+.admin-main {
+    padding: var(--gap-24);
+}
+
+/* Бейджи */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-4);
+    font-size: var(--fs-12);
+    font-weight: 500;
+}
+
+.badge--new {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.badge--paid {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.badge--shipped {
+    background: #FEF9C3;
+    color: #92400E;
+}
+
+.badge--cancelled {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+}

@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Доступ запрещён";
+}
+
+<section class="section access-denied">
+    <div class="container">
+        <h1 class="h1">Доступ запрещён</h1>
+        <p class="muted">У вас нет прав для просмотра этой страницы.</p>
+
+        <div class="section__actions">
+            <a class="btn btn--primary" asp-controller="Home" asp-action="Index">
+                На главную
+            </a>
+            <a class="btn btn--secondary" asp-controller="Catalog" asp-action="Index">
+                В каталог
+            </a>
+        </div>
+    </div>
+</section>

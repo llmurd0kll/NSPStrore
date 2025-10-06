@@ -1,0 +1,68 @@
+﻿@model NspStore.Web.ViewModels.CartVm
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<section class="section cart">
+    <div class="container">
+        <h1 class="h1">Корзина</h1>
+
+        @if (!Model.Items.Any())
+        {
+            <p class="muted">Корзина пуста.</p>
+            <div class="section__actions">
+                <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
+                    Перейти в каталог
+                </a>
+            </div>
+        }
+        else
+        {
+            <table class="table cart__table">
+                <thead>
+                    <tr>
+                        <th scope="col">Товар</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">Кол-во</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Price.ToString("0.00") BYN</td>
+                            <td>@item.Qty</td>
+                            <td>@item.LineTotal.ToString("0.00") BYN</td>
+                            <td>
+                                <form method="post" asp-action="Remove" class="inline-form" aria-label="Удалить @item.Name из корзины">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="productId" value="@item.ProductId" />
+                                    <button class="btn btn--secondary btn--sm" type="submit">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="cart__summary">
+                <p class="cart__total"><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
+
+                <div class="cart__actions section__actions">
+                    <form method="post" asp-action="Clear" class="inline-form">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn--secondary" type="submit">Очистить корзину</button>
+                    </form>
+
+                    <a class="btn btn--primary" asp-controller="Checkout" asp-action="Index">
+                        Оформить заказ
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+

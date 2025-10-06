@@ -1,0 +1,15 @@
+﻿/* ===========================
+   Профиль пользователя
+   =========================== */
+
+.profile__info {
+    margin-bottom: var(--gap-24);
+    font-size: var(--fs-16);
+    line-height: 1.5;
+}
+
+.profile__actions {
+    display: flex;
+    gap: var(--gap-16);
+    flex-wrap: wrap;
+}

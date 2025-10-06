@@ -1,0 +1,62 @@
+﻿@model List<NspStore.Domain.Entities.Address>
+@{
+    ViewData["Title"] = "Мои адреса";
+}
+
+<section class="section addresses">
+    <div class="container">
+        <h1 class="h1">Мои адреса</h1>
+
+        <div class="section__actions">
+            <a class="btn btn--primary" asp-action="Create">Добавить адрес</a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <p class="muted">Адреса не добавлены.</p>
+        }
+        else
+        {
+            <table class="table addresses__table">
+                <thead>
+                    <tr>
+                        <th scope="col">Город</th>
+                        <th scope="col">Улица</th>
+                        <th scope="col">Квартира</th>
+                        <th scope="col">Индекс</th>
+                        <th scope="col">По умолчанию</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td>@a.City</td>
+                            <td>@a.Street</td>
+                            <td>@a.Apartment</td>
+                            <td>@a.PostalCode</td>
+                            <td>
+                                @if (a.IsDefault)
+                                {
+                                    <span class="badge badge--success">Да</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge--neutral">Нет</span>
+                                }
+                            </td>
+                            <td class="addresses__actions">
+                                <a class="btn btn--secondary btn--sm" asp-action="Edit" asp-route-id="@a.Id">Изменить</a>
+                                <form method="post" asp-action="Delete" asp-route-id="@a.Id" class="inline-form">
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn--secondary btn--sm" type="submit">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>
