@@ -84,7 +84,9 @@
    git clone https://github.com/username/nsp-store.git
 2. Настроить строку подключения в appsettings.json
 3. Применить миграции:
-dotnet ef database update
+   ```bash
+   dotnet ef database update
 3. Запустить проект:
-dotnet run
+   ```bash
+   dotnet run
 
