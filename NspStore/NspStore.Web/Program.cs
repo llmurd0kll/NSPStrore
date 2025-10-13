@@ -48,6 +48,8 @@ builder.Services.ConfigureApplicationCookie(opts => {
     opts.AccessDeniedPath = "/Account/AccessDenied";
 });
 
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 builder.Services.AddScoped<CartService>();
@@ -91,6 +93,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGet("/", () => " Приложение запущено");
 
 app.Run();
 
