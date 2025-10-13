@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
 WORKDIR /src
 COPY . .
 
-RUN dotnet restore
+RUN dotnet restore NSPStrore/NspStore/NspStore.Web/NspStore.Web.csproj
 RUN dotnet publish NSPStrore/NspStore/NspStore.Web/NspStore.Web.csproj -c Release -o /app --no-restore
 
 # Runtime stage
