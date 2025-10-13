@@ -14,7 +14,7 @@ builder.Services.AddControllersWithViews();
 
 // 2. EF Core + SQL Server
 builder.Services.AddDbContext<AppDbContext>(opts =>
-    opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    opts.UseNpgsql(builder.Configuration["DB_CONNECTION_STRING"]));
 
 // 3. Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => {
