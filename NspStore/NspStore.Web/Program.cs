@@ -9,41 +9,37 @@ using NspStore.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Хелпер для преобразования DATABASE_URL → Npgsql connection string
-string BuildConnectionString()
+string BuildConnectionString(WebApplicationBuilder builder)
 {
+    // 1. Пробуем взять DATABASE_URL (Railway/Heroku стиль)
     var rawUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-    if (string.IsNullOrEmpty(rawUrl))
-        throw new InvalidOperationException("DATABASE_URL is not set");
+    if (!string.IsNullOrEmpty(rawUrl))
+    {
+        var uri = new Uri(rawUrl);
+        var userInfo = uri.UserInfo.Split(':');
 
-    var uri = new Uri(rawUrl);
-    var userInfo = uri.UserInfo.Split(':');
+        var host = uri.Host;
+        var port = uri.Port > 0 ? uri.Port : 5432;
+        var db = uri.AbsolutePath.TrimStart('/');
+        var user = userInfo[0];
+        var pass = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "";
 
-    var host = uri.Host;
-    var port = uri.Port > 0 ? uri.Port : 5432;
-    var db = uri.AbsolutePath.TrimStart('/');
-    var user = userInfo[0];
-    var pass = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "";
+        return $"Host={host};Port={port};Database={db};Username={user};Password={pass};SSL Mode=Require;Trust Server Certificate=true;";
+    }
 
-    return $"Host={host};Port={port};Database={db};Username={user};Password={pass};SSL Mode=Require;Trust Server Certificate=true;";
+    // 2. Если DATABASE_URL нет → fallback на appsettings.json
+    return builder.Configuration.GetConnectionString("DefaultConnection");
 }
 
 // Собираем строку подключения
-var connectionString = BuildConnectionString();
-
-// 2. Если переменной нет — fallback на appsettings.json
-if (string.IsNullOrEmpty(connectionString))
-{
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-}
+var connectionString = BuildConnectionString(builder);
 
 // 1. MVC
 builder.Services.AddControllersWithViews();
 
 // 2. EF Core + Postgress
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-        ?? builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 
 // 3. Identity
