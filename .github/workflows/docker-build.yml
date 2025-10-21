@@ -28,7 +28,7 @@ jobs:
 
       # Сначала тесты
       - name: Run tests
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test ./NspStore/NspStore.sln --no-build --verbosity normal
 
       # Сборка и пуш образа
       - name: Build and push Docker image
