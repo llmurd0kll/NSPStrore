@@ -18,9 +18,13 @@ string BuildConnectionString()
     var uri = new Uri(rawUrl);
     var userInfo = uri.UserInfo.Split(':');
 
-    return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};" +
-           $"Username={userInfo[0]};Password={Uri.UnescapeDataString(userInfo[1])};" +
-           "SSL Mode=Require;Trust Server Certificate=true;";
+    var host = uri.Host;
+    var port = uri.Port > 0 ? uri.Port : 5432;
+    var db = uri.AbsolutePath.TrimStart('/');
+    var user = userInfo[0];
+    var pass = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : "";
+
+    return $"Host={host};Port={port};Database={db};Username={user};Password={pass};SSL Mode=Require;Trust Server Certificate=true;";
 }
 
 // Собираем строку подключения
