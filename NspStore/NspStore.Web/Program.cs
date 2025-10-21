@@ -9,12 +9,24 @@ using NspStore.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1. Берём строку подключения из переменной окружения Railway
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+// 2. Если переменной нет — fallback на appsettings.json
+if (string.IsNullOrEmpty(connectionString))
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+}
+
 // 1. MVC
 builder.Services.AddControllersWithViews();
 
-// 2. EF Core + SQL Server
-builder.Services.AddDbContext<AppDbContext>(opts =>
-    opts.UseNpgsql(builder.Configuration["DB_CONNECTION_STRING"]));
+// 2. EF Core + Postgress
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(
+        Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+        ?? builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // 3. Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts => {
@@ -48,7 +60,8 @@ builder.Services.ConfigureApplicationCookie(opts => {
     opts.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-builder.WebHost.UseUrls("http://0.0.0.0:8080");
+// Если переменная ASPNETCORE_URLS задана (например, в Docker), она перекроет launchSettings.json
+builder.WebHost.UseUrls(builder.Configuration["ASPNETCORE_URLS"] ?? "http://localhost:5000;https://localhost:5001");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
@@ -94,7 +107,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapGet("/", () => " Приложение запущено");
+//app.MapGet("/", () => " Приложение запущено");
 
 app.Run();
 
