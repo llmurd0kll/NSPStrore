@@ -1,7 +1,16 @@
 # 🛒 NSP Store
 
+![Build](https://github.com/username/nsp-store/actions/workflows/docker-build.yml/badge.svg)
+![.NET](https://img.shields.io/badge/.NET-8.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 **NSP Store** — проект интернет‑магазина с полноценной пользовательской частью и административной панелью.  
 Проект демонстрирует владение **ASP.NET Core MVC**, **Entity Framework Core**, **SQL Server**, а также современными практиками фронтенд‑разработки (**HTML5, CSS3, BEM, адаптивная верстка**).
+
+---
+
+## 🌐 Demo
+👉 [Открыть NSP Store](https://nspstore.railway.app)  
 
 ---
 
@@ -79,14 +88,32 @@
 
 ## 🧑‍💻 Запуск проекта
 
-1. Клонировать репозиторий:
-   ```bash
-   git clone https://github.com/username/nsp-store.git
-2. Настроить строку подключения в appsettings.json
-3. Применить миграции:
-   ```bash
-   dotnet ef database update
-3. Запустить проект:
-   ```bash
-   dotnet run
+### Локально
+```bash
+git clone https://github.com/username/nsp-store.git
+cd nsp-store/NspStore
+dotnet ef database update
+dotnet run
+```
+### Через Docker
+```bash
+docker run -p 5000:80 ghcr.io/llmurd0kll/nspstore:latest
+```
 
+---
+
+## ⚙️ CI/CD
+- GitHub Actions: автоматическая сборка, тесты, публикация Docker‑образа в GHCR
+- Railway: автодеплой при обновлении образа
+
+---
+
+## 🤝 Contributing
+- Pull‑requests приветствуются! Для крупных изменений сначала открой issue.
+
+---
+
+## 📄 License
+Этот проект распространяется под лицензией MIT.
+
+---
