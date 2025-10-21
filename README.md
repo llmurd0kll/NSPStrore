@@ -10,7 +10,7 @@
 ---
 
 ## 🌐 Demo
-👉 [Открыть NSP Store]([https://nspstore.railway.app](https://nspstore-production.up.railway.app))  
+👉 [Открыть NSP Store](https://nspstore-production.up.railway.app)  
 
 ---
 
