@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+п»їusing Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NspStore.Application.Interfaces;
 using NspStore.Application.Services;
@@ -8,11 +8,25 @@ using NspStore.Infrastructure.Persistence;
 using NspStore.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+// РҐРµР»РїРµСЂ РґР»СЏ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ DATABASE_URL в†’ Npgsql connection string
+string BuildConnectionString()
+{
+    var rawUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    if (string.IsNullOrEmpty(rawUrl))
+        throw new InvalidOperationException("DATABASE_URL is not set");
 
-// 1. Берём строку подключения из переменной окружения Railway
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+    var uri = new Uri(rawUrl);
+    var userInfo = uri.UserInfo.Split(':');
 
-// 2. Если переменной нет — fallback на appsettings.json
+    return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};" +
+           $"Username={userInfo[0]};Password={Uri.UnescapeDataString(userInfo[1])};" +
+           "SSL Mode=Require;Trust Server Certificate=true;";
+}
+
+// РЎРѕР±РёСЂР°РµРј СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ
+var connectionString = BuildConnectionString();
+
+// 2. Р•СЃР»Рё РїРµСЂРµРјРµРЅРЅРѕР№ РЅРµС‚ вЂ” fallback РЅР° appsettings.json
 if (string.IsNullOrEmpty(connectionString))
 {
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -60,7 +74,7 @@ builder.Services.ConfigureApplicationCookie(opts => {
     opts.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-// Если переменная ASPNETCORE_URLS задана (например, в Docker), она перекроет launchSettings.json
+// Р•СЃР»Рё РїРµСЂРµРјРµРЅРЅР°СЏ ASPNETCORE_URLS Р·Р°РґР°РЅР° (РЅР°РїСЂРёРјРµСЂ, РІ Docker), РѕРЅР° РїРµСЂРµРєСЂРѕРµС‚ launchSettings.json
 builder.WebHost.UseUrls(builder.Configuration["ASPNETCORE_URLS"] ?? "http://localhost:5000;https://localhost:5001");
 
 builder.Services.AddHttpContextAccessor();
@@ -107,7 +121,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//app.MapGet("/", () => " Приложение запущено");
+//app.MapGet("/", () => " РџСЂРёР»РѕР¶РµРЅРёРµ Р·Р°РїСѓС‰РµРЅРѕ");
 
 app.Run();
 
