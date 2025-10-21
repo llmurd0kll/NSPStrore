@@ -21,7 +21,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ llmurd0kll }}
+          username: llmurd0kll
           password: ${{ secrets.NspStoreToken }}
 
       - name: Build and push Docker image
