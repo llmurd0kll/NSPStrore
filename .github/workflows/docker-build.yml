@@ -1,9 +1,10 @@
-name: Build and Push Docker image
+name: Build, Test, Push and Deploy
 
 on:
   push:
-    branches: [ "main" ]   # запускается при пуше в main
-  workflow_dispatch:       # возможность запустить вручную
+    branches: [ "main" ]
+    tags: [ "v*" ]          # если пушить git tag v1.0.0 — тоже соберётся
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,23 +12,39 @@ jobs:
 
     permissions:
       contents: read
-      packages: write   # нужно для пуша в GHCR
+      packages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Логинимся в GHCR
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: llmurd0kll
-          password: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.GHCR_PAT }}   # PAT в секретах
 
+      # Сначала тесты
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+
+      # Сборка и пуш образа
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./NspStore              # корень репозитория
-          file: ./NspStore/Dockerfile     
+          context: ./NspStore
+          file: ./NspStore/Dockerfile
           push: true
-          tags: ghcr.io/llmurd0kll/nspstore:latest
+          tags: |
+            ghcr.io/llmurd0kll/nspstore:latest
+            ghcr.io/llmurd0kll/nspstore:main-${{ github.sha }}
+            ghcr.io/llmurd0kll/nspstore:${{ github.ref_name }}
+
+      # Триггерим деплой в Railway
+      - name: Trigger Railway Deploy
+        run: |
+          curl -X POST https://backboard.railway.app/webhook/deploy/${{ secrets.RAILWAY_WEBHOOK }} \
+          -H "Content-Type: application/json" \
+          -d '{"service":"nspstore"}'
