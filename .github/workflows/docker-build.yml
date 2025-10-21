@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .              # корень репозитория
-          file: ./Dockerfile     
+          file: ./NspStore/Dockerfile     
           push: true
           tags: ghcr.io/llmurd0kll/nspstore:latest
