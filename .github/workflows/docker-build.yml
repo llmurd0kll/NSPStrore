@@ -27,6 +27,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: .              # корень репозитория
+          file: ./Dockerfile     
           push: true
-          tags: ghcr.io/llmurd0kll/nspstore/nspstore:latest
+          tags: ghcr.io/llmurd0kll/nspstore:latest
