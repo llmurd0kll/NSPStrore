@@ -46,13 +46,4 @@
         public string MainImage =>
             Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
     }
-
-    /// <summary>
-    /// ViewModel для изображения товара.
-    /// </summary>
-    public class ProductImageVm
-    {
-        public string Url { get; set; } = null!;
-        public int SortOrder { get; set; }
-    }
 }

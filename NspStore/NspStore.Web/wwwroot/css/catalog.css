@@ -1,0 +1,28 @@
+/* ===========================
+   Сетка каталога
+   =========================== */
+
+.catalog-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-16);
+    justify-content: center; /* чтобы красиво центрировались */
+}
+
+.catalog__header {
+    margin-bottom: var(--gap-32); /* или 2rem */
+}
+
+/* планшет */
+@media (min-width: var(--bp-sm)) {
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* десктоп */
+@media (min-width: var(--bp-md)) {
+    .catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

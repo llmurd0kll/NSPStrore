@@ -1,26 +1,26 @@
 ﻿@model IEnumerable<NspStore.Domain.Entities.Product>
 @{
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Товары";
 }
 
 <section class="section admin-products">
     <div class="container">
-        <h1 class="h1">Товары</h1>
-
-        <div class="toolbar toolbar--between">
-            <a class="btn btn--primary" asp-action="Create">Добавить товар</a>
+        <div class="section__header">
+            <h1 class="h1">📦 Товары</h1>
+            <a asp-action="Create" class="btn btn--primary">➕ Добавить товар</a>
         </div>
 
-        <table class="table table--admin">
+        <table class="table table--striped">
             <thead>
                 <tr>
-                    <th class="ta-left">Id</th>
-                    <th class="ta-left">Название</th>
-                    <th class="ta-left">SKU</th>
-                    <th class="ta-left">Цена</th>
-                    <th class="ta-left">Категория</th>
-                    <th class="ta-right">Действия</th>
+                    <th>Id</th>
+                    <th>Фото</th>
+                    <th>Название</th>
+                    <th>SKU</th>
+                    <th>Цена</th>
+                    <th>Категория</th>
+                    <th>Фото</th>
+                    <th class="text-right">Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,33 +28,32 @@
                 {
                     <tr>
                         <td>@p.Id</td>
+                        <td>
+                            @if (p.Images?.Any() == true)
+                            {
+                                <img src="@p.Images.First().Url" alt="@p.Name" width="50" class="thumb" />
+                            }
+                            else
+                            {
+                                <span class="muted">—</span>
+                            }
+                        </td>
                         <td>@p.Name</td>
                         <td>@p.Sku</td>
-                        <td>@p.Price.ToString("0.00") BYN</td>
-                        <td>@p.Category?.Name</td>
-                        <td class="ta-right actions">
-                            <a class="btn btn--sm" asp-action="Edit" asp-route-id="@p.Id">Редактировать</a>
-                            <a class="btn btn--sm btn--danger" asp-action="Delete" asp-route-id="@p.Id">Удалить</a>
-                            <a class="btn btn--sm"
-                               asp-area="Admin"
-                               asp-controller="ProductImages"
-                               asp-action="Index"
-                               asp-route-productId="@p.Id">
-                                Изображения
-                            </a>
+                        <td>@p.Price.ToString("0.00 BYN")</td>
+                        <td>
+                            <span class="badge">@p.Category?.Name</span>
+                        </td>
+                        <td>@(p.Images?.Count ?? 0)</td>
+                        <td class="text-right">
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn--sm btn--info" title="Редактировать">✏️</a>
+                            <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn--sm btn--danger" title="Удалить">🗑️</a>
+                            <a asp-area="Admin" asp-controller="ProductImages" asp-action="Index" asp-route-productId="@p.Id" class="btn btn--sm btn--secondary" title="Изображения">📷</a>
                         </td>
                     </tr>
                 }
+
             </tbody>
         </table>
-
-        @if (TempData["Error"] is string err)
-        {
-            <div class="alert alert--error">@err</div>
-        }
-        @if (TempData["Success"] is string ok)
-        {
-            <div class="alert alert--success">@ok</div>
-        }
     </div>
 </section>

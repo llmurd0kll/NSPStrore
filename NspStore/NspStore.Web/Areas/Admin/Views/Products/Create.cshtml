@@ -1,12 +1,10 @@
 ﻿@model NspStore.Web.Areas.Admin.ViewModels.ProductEditVm
-@{
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
-    ViewData["Title"] = "Создать товар";
-}
 
-<section class="section admin-product">
+<section class="section admin-product-form">
     <div class="container">
-        <h1 class="h1">Создать товар</h1>
+        <div class="section__header">
+            <h1 class="h1">➕ Добавить товар</h1>
+        </div>
 
         <form asp-action="Create" method="post" class="form" novalidate>
             @Html.AntiForgeryToken()
@@ -14,53 +12,54 @@
             <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
 
             <div class="form__row">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" />
+                <label asp-for="Name" class="form__label"></label>
+                <input asp-for="Name" class="input" />
                 <span asp-validation-for="Name" class="input__error"></span>
             </div>
 
             <div class="form__row">
-                <label asp-for="Slug"></label>
-                <input asp-for="Slug" />
+                <label asp-for="Slug" class="form__label"></label>
+                <input asp-for="Slug" class="input" />
                 <span asp-validation-for="Slug" class="input__error"></span>
             </div>
 
             <div class="form__row">
-                <label asp-for="Sku"></label>
-                <input asp-for="Sku" />
+                <label asp-for="Sku" class="form__label"></label>
+                <input asp-for="Sku" class="input" />
                 <span asp-validation-for="Sku" class="input__error"></span>
             </div>
 
             <div class="form__row">
-                <label asp-for="Price"></label>
-                <input asp-for="Price" />
+                <label asp-for="Price" class="form__label"></label>
+                <input asp-for="Price" class="input" type="number" step="0.01" />
                 <span asp-validation-for="Price" class="input__error"></span>
             </div>
 
             <div class="form__row">
-                <label asp-for="ShortDescription"></label>
-                <textarea asp-for="ShortDescription"></textarea>
+                <label asp-for="ShortDescription" class="form__label"></label>
+                <textarea asp-for="ShortDescription" class="input"></textarea>
                 <span asp-validation-for="ShortDescription" class="input__error"></span>
             </div>
 
             <div class="form__row">
-                <label asp-for="CategoryId"></label>
-                <select asp-for="CategoryId">
-                    @foreach (var c in Model.CategoryOptions)
-                    {
-                        <option value="@c.Id">@c.Name</option>
-                    }
+                <label asp-for="CategoryId" class="form__label"></label>
+                <select asp-for="CategoryId" class="input"
+                        asp-items="@(new SelectList(Model.CategoryOptions, "Id", "Name"))">
+                    <option value="">-- выберите категорию --</option>
                 </select>
+
+
                 <span asp-validation-for="CategoryId" class="input__error"></span>
             </div>
 
             <div class="form__actions">
-                <button class="btn btn--primary" type="submit">Сохранить</button>
-                <a class="btn" asp-action="Index">Отмена</a>
+                <button type="submit" class="btn btn--primary">💾 Сохранить</button>
+                <a asp-action="Index" class="btn btn--secondary">↩️ Отмена</a>
             </div>
         </form>
     </div>
 </section>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

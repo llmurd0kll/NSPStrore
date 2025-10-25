@@ -1,6 +1,5 @@
 ﻿@{
-    Layout = null;
-    var title = ViewData["Title"] ?? "Админка";
+    var title = (ViewData?["Title"] as string) ?? "Админка";
 }
 
 <!DOCTYPE html>
@@ -85,12 +84,27 @@
     </footer>
 
     <!-- Сначала jQuery -->
-    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <!-- Потом validate -->
     <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.getElementById("menuToggle");
+            const menu = document.getElementById("mainMenu");
+
+            if (toggle && menu) {
+                toggle.addEventListener("click", function () {
+                    menu.classList.toggle("navbar__menu--open");
+                });
+            }
+        });
+    </script>
 </body>
+
+
 </html>
