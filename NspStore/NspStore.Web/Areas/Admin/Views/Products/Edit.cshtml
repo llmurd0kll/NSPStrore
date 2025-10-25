@@ -78,6 +78,15 @@
             </div>
 
             <div class="form__actions">
+            <a class="btn btn--info" 
+   asp-area="Admin" 
+   asp-controller="ProductImages" 
+   asp-action="Index" 
+   asp-route-productId="@Model.Id">
+   📷 Управление изображениями
+</a>
+
+
                 <button class="btn btn--primary" type="submit">Сохранить</button>
                 <a class="btn" asp-action="Index">Отмена</a>
             </div>

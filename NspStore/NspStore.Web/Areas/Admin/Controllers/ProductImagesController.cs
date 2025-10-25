@@ -38,14 +38,40 @@ namespace NspStore.Web.Areas.Admin.Controllers
         // POST: Admin/ProductImages/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductImage model)
+        public async Task<IActionResult> Create(int productId, IFormFile file)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (file == null || file.Length == 0)
+            {
+                ModelState.AddModelError("", "Файл не выбран");
+                ViewBag.ProductId = productId;
+                return View(new ProductImage { ProductId = productId });
+            }
 
-            _db.ProductImages.Add(model);
+            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            if (!Directory.Exists(uploads))
+                Directory.CreateDirectory(uploads);
+
+            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploads, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var image = new ProductImage
+            {
+                ProductId = productId,
+                Url = "/uploads/" + fileName,
+                SortOrder = 0
+            };
+
+            _db.ProductImages.Add(image);
             await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { productId = model.ProductId });
+
+            return RedirectToAction(nameof(Index), new { productId });
         }
+
 
         // GET: Admin/ProductImages/Delete/5
         public async Task<IActionResult> Delete(int id)
