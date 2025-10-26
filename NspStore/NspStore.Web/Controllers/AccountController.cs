@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NspStore.Application.ViewsModels;
 using NspStore.Infrastructure.Identity;
 using NspStore.Infrastructure.Persistence;
-using NspStore.Web.ViewModels;
 
 namespace NspStore.Web.Controllers
 {

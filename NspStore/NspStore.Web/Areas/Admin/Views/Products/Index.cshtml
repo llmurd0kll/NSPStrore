@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NspStore.Domain.Entities.Product>
+﻿@using NspStore.Application.Services
+@model IEnumerable<NspStore.Domain.Entities.Product>
 @{
     ViewData["Title"] = "Товары";
 }
@@ -40,7 +41,7 @@
                         </td>
                         <td>@p.Name</td>
                         <td>@p.Sku</td>
-                        <td>@p.Price.ToString("0.00 BYN")</td>
+                        <td>@PriceHelper.GetCurrentPrice(p).ToString("0.00") BYN</td>
                         <td>
                             <span class="badge">@p.Category?.Name</span>
                         </td>

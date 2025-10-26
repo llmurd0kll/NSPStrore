@@ -1,4 +1,4 @@
-﻿namespace NspStore.Web.ViewModels
+﻿namespace NspStore.Application.ViewsModels
 {
     public class ProductImageVm
     {

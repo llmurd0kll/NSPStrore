@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NspStore.Application.Interfaces;
+using NspStore.Application.ViewsModels;
 using NspStore.Domain.Entities;
 using NspStore.Infrastructure.Persistence;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NspStore.Application.Services
 {
@@ -17,25 +15,19 @@ namespace NspStore.Application.Services
     {
         private readonly AppDbContext _db;
 
-        /// <summary>
-        /// Внедрение DbContext через DI.
-        /// </summary>
         public CatalogService(AppDbContext db) => _db = db;
 
         /// <summary>
         /// Поиск товаров по запросу и категории.
-        /// Возвращает список товаров и общее количество для пагинации.
+        /// Возвращает список ProductVm и общее количество для пагинации.
         /// </summary>
-        /// <param name="q">Поисковая строка (часть названия или описания).</param>
-        /// <param name="categorySlug">Slug категории (если указан).</param>
-        /// <param name="page">Номер страницы (начиная с 1).</param>
-        /// <param name="pageSize">Размер страницы (количество элементов).</param>
-        public async Task<(IReadOnlyList<Product> Items, int Total)> SearchAsync(
+        public async Task<(IReadOnlyList<ProductVm> Items, int Total)> SearchAsync(
             string? q, string? categorySlug, int page, int pageSize)
         {
             var query = _db.Products
                 .Include(p => p.Images)
                 .Include(p => p.Category)
+                .Include(p => p.Prices) // подтягиваем цены
                 .Where(p => p.IsActive);
 
             // Фильтрация по поисковому запросу
@@ -57,18 +49,35 @@ namespace NspStore.Application.Services
                 .Take(pageSize)
                 .ToListAsync();
 
-            return (items, total);
+            // Маппинг в VM
+            var vms = items.Select(p => new ProductVm
+            {
+                Id = p.Id,
+                Sku = p.Sku,
+                Slug = p.Slug,
+                Name = p.Name,
+                ShortDescription = p.ShortDescription,
+                CategoryName = p.Category?.Name,
+                Images = p.Images
+        .OrderBy(i => i.SortOrder)
+        .Select(i => new ProductImageVm { Url = i.Url, SortOrder = i.SortOrder })
+        .ToList(),
+                CurrentPrice = PriceHelper.GetCurrentPrice(p)
+            }).ToList();
+
+            return (vms, total);
         }
 
         /// <summary>
         /// Получить товар по slug.
-        /// Подтягивает изображения, атрибуты и категорию.
+        /// Подтягивает изображения, атрибуты, категорию и цены.
         /// </summary>
         public async Task<Product?> GetBySlugAsync(string slug) =>
             await _db.Products
                 .Include(p => p.Images)
                 .Include(p => p.Attributes)
                 .Include(p => p.Category)
+                .Include(p => p.Prices)
                 .FirstOrDefaultAsync(p => p.Slug == slug && p.IsActive);
 
         /// <summary>

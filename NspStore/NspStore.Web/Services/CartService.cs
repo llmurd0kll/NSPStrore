@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using NspStore.Domain.Entities;
+using NspStore.Application.Services;
 
 namespace NspStore.Web.Services
 {
@@ -68,7 +69,7 @@ namespace NspStore.Web.Services
                 {
                     ProductId = p.Id,
                     Name = p.Name,
-                    Price = p.Price,
+                    Price = PriceHelper.GetCurrentPrice(p),
                     Qty = qty
                 });
             }

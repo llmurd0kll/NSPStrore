@@ -1,4 +1,5 @@
-﻿@model NspStore.Domain.Entities.Product
+﻿@using NspStore.Application.Services
+@model NspStore.Domain.Entities.Product
 @{
     ViewData["Title"] = Model.Name;
     var image = Model.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
@@ -18,7 +19,9 @@
             <section class="product__info">
                 <div class="product__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                     <meta itemprop="priceCurrency" content="BYN" />
-                    <span class="product__price-value" itemprop="price">@Model.Price.ToString("0.00")</span> BYN
+                    <span class="product__price-value" itemprop="price">
+                        @PriceHelper.GetCurrentPrice(Model).ToString("0.00")
+                    </span> BYN
                 </div>
 
                 <div class="product__desc" itemprop="description">

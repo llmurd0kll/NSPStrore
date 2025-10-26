@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NspStore.Application.ViewsModels;
 using NspStore.Infrastructure.Persistence;
 using NspStore.Web.Services;
-using NspStore.Web.ViewModels;
 
 namespace NspStore.Web.Controllers
 {
@@ -52,13 +52,17 @@ namespace NspStore.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int productId, int qty = 1)
         {
-            var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await _db.Products
+                .Include(p => p.Prices) // подтягиваем цены
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
             if (product == null)
                 return NotFound();
 
             _cart.Add(product, qty);
             return RedirectToAction(nameof(Index));
         }
+
 
         /// <summary>
         /// Удаляет товар из корзины.

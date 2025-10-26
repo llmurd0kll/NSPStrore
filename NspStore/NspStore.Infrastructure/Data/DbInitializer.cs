@@ -82,39 +82,48 @@ namespace NspStore.Infrastructure.Data
                     {
                         Name = "Омега-3",
                         Slug = "omega-3",
-                        Price = 25.50m,
                         ShortDescription = "Полиненасыщенные жирные кислоты",
                         Sku = "NSP-001",
                         CategoryId = categories[0].Id,
                         Images = new List<ProductImage>
                         {
                             new ProductImage { Url = "/images/products/omega3.jpg", SortOrder = 1 }
+                        },
+                        Prices = new List<Price>
+                        {
+                            new Price { Value = 25.50m, Currency = "BYN", EffectiveFrom = DateTime.UtcNow.AddDays(-1) }
                         }
                     },
                     new Product
                     {
                         Name = "Витамин C",
                         Slug = "vitamin-c",
-                        Price = 12.00m,
                         ShortDescription = "Аскорбиновая кислота для иммунитета",
                         Sku = "NSP-002",
                         CategoryId = categories[1].Id,
                         Images = new List<ProductImage>
                         {
                             new ProductImage { Url = "/images/products/vitamin-c.jpg", SortOrder = 1 }
+                        },
+                        Prices = new List<Price>
+                        {
+                            new Price { Value = 12.00m, Currency = "BYN", EffectiveFrom = DateTime.UtcNow.AddDays(-1) }
                         }
                     },
                     new Product
                     {
                         Name = "Крем для лица",
                         Slug = "face-cream",
-                        Price = 30.00m,
                         ShortDescription = "Увлажняющий крем для ежедневного ухода",
                         Sku = "NSP-003",
                         CategoryId = categories[2].Id,
                         Images = new List<ProductImage>
                         {
                             new ProductImage { Url = "/images/products/face-cream.jpg", SortOrder = 1 }
+                        },
+                        Prices = new List<Price>
+                        {
+                            new Price { Value = 30.00m, Currency = "BYN", EffectiveFrom = DateTime.UtcNow.AddDays(-1) }
                         }
                     }
                 };

@@ -1,4 +1,5 @@
-﻿@model NspStore.Domain.Entities.Product
+﻿@using NspStore.Application.Services
+@model NspStore.Domain.Entities.Product
 @{
     ViewData["Title"] = "Удалить товар";
 }
@@ -14,9 +15,10 @@
         </p>
 
         <div class="preview">
-            <p><strong>Цена:</strong> @Model.Price.ToString("0.00") BYN</p>
+            <p><strong>Цена:</strong> @PriceHelper.GetCurrentPrice(Model).ToString("0.00") BYN</p>
             <p><strong>Категория:</strong> @Model.Category?.Name</p>
         </div>
+
 
         <form asp-action="Delete" method="post" class="form">
             @Html.AntiForgeryToken()

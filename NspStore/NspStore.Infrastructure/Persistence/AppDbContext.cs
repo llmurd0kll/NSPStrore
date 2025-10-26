@@ -22,6 +22,8 @@ namespace NspStore.Infrastructure.Persistence
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
         public DbSet<Address> Addresses => Set<Address>();
+        public DbSet<Price> Prices => Set<Price>();
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,6 +36,10 @@ namespace NspStore.Infrastructure.Persistence
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new ProductImageConfiguration());
             builder.ApplyConfiguration(new ProductAttributeConfiguration());
+            builder.ApplyConfiguration(new PriceConfiguration());
+            builder.ApplyConfiguration(new OrderItemConfiguration());
+
+
         }
     }
 }
