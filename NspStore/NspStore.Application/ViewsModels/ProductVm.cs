@@ -1,4 +1,4 @@
-﻿namespace NspStore.Web.ViewModels
+﻿namespace NspStore.Application.ViewsModels
 {
     /// <summary>
     /// ViewModel для отображения товара в каталоге и на странице товара.
@@ -21,11 +21,6 @@
         public string Slug { get; set; } = null!;
 
         /// <summary>
-        /// Цена товара.
-        /// </summary>
-        public decimal Price { get; set; }
-
-        /// <summary>
         /// Краткое описание.
         /// </summary>
         public string? ShortDescription { get; set; }
@@ -45,14 +40,21 @@
         /// </summary>
         public string MainImage =>
             Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
-    }
 
-    /// <summary>
-    /// ViewModel для изображения товара.
-    /// </summary>
-    public class ProductImageVm
-    {
-        public string Url { get; set; } = null!;
-        public int SortOrder { get; set; }
+        /// <summary>
+        /// Текущая цена (с учётом истории цен).
+        /// </summary>
+        public decimal CurrentPrice { get; set; }
+
+        /// <summary>
+        /// Название категории.
+        /// </summary>
+        public string? CategoryName { get; set; }
+
+        /// <summary>
+        /// Упрощённое свойство для использования в Razor.
+        /// </summary>
+        public string ImageUrl => MainImage;
+
     }
 }

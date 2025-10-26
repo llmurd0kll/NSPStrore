@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NspStore.Web.ViewModels
+namespace NspStore.Application.ViewsModels
 {
     /// <summary>
     /// ViewModel для формы регистрации нового пользователя.

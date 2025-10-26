@@ -1,8 +1,4 @@
-/* ===========================
-   Главный файл стилей NSP Store
-   =========================== */
 
-/* Подключение модулей */
 @import url('reset.css');
 @import url('variables.css');
 @import url('layout.css');
@@ -17,10 +13,7 @@
 @import url('access-denied.css');
 @import url('auth.css');
 @import url('profile.css');
-
-/* ===========================
-   Глобальные секции
-   =========================== */
+@import url('catalog.css');
 
 .main {
     padding: var(--gap-24) 0;
@@ -39,9 +32,9 @@
     text-align: center;
 }
 
-    .section--hero .h1 {
-        margin-bottom: var(--gap-16);
-    }
+.section--hero .h1 {
+    margin-bottom: var(--gap-16);
+}
 
 .section__actions {
     margin-top: var(--gap-24);

@@ -1,4 +1,5 @@
-﻿@model NspStore.Web.ViewModels.CatalogVm
+﻿@using NspStore.Application.Services
+@model NspStore.Application.ViewsModels.CatalogVm
 @{
     ViewData["Title"] = "Каталог";
 }
@@ -32,7 +33,7 @@
                             <span class="product-card__sku">Артикул: @p.Sku</span>
                             <span class="product-card__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="BYN" />
-                                <span itemprop="price">@p.Price.ToString("0.00")</span> BYN
+                                <span itemprop="price">@p.CurrentPrice.ToString("0.00")</span> BYN
                             </span>
                         </div>
 

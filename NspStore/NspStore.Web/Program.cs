@@ -6,8 +6,23 @@ using NspStore.Infrastructure.Data;
 using NspStore.Infrastructure.Identity;
 using NspStore.Infrastructure.Persistence;
 using NspStore.Web.Services;
+using Serilog;
+using Serilog.Events;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog(Log.Logger);
+
+
+// Чтение секции Store
+builder.Services.Configure<StoreOptions>(builder.Configuration.GetSection("Store"));
+
 // Хелпер для преобразования DATABASE_URL → Npgsql connection string
 string BuildConnectionString(WebApplicationBuilder builder)
 {
@@ -123,7 +138,19 @@ app.MapControllerRoute(
 
 //app.MapGet("/", () => " Приложение запущено");
 
-app.Run();
+try
+{
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Приложение завершилось из-за критической ошибки");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
+
 
 public static class IdentitySeed
 {

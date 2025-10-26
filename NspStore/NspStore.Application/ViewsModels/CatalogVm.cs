@@ -1,4 +1,4 @@
-﻿namespace NspStore.Web.ViewModels
+﻿namespace NspStore.Application.ViewsModels
 {
     /// <summary>
     /// ViewModel для страницы каталога.
@@ -9,7 +9,7 @@
         /// <summary>
         /// Список товаров для отображения.
         /// </summary>
-        public IReadOnlyList<ProductVm> Items { get; set; } = Array.Empty<ProductVm>();
+        public IReadOnlyList<ProductVm> Items { get; set; } = new List<ProductVm>();
 
         /// <summary>
         /// Общее количество товаров (для пагинации).

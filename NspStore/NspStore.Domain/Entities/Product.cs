@@ -46,11 +46,6 @@
         public string? CompositionHtml { get; set; }
 
         /// <summary>
-        /// Цена товара.
-        /// </summary>
-        public decimal Price { get; set; }
-
-        /// <summary>
         /// Флаг активности.
         /// Если false — товар скрыт из каталога.
         /// </summary>
@@ -75,5 +70,8 @@
         /// Навигационное свойство: атрибуты товара (например, размер, цвет).
         /// </summary>
         public ICollection<ProductAttribute> Attributes { get; set; } = new List<ProductAttribute>();
+
+        public ICollection<Price> Prices { get; set; } = new List<Price>();
+
     }
 }

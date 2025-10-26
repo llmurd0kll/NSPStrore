@@ -1,6 +1,5 @@
-﻿using NspStore.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using NspStore.Application.ViewsModels;
+using NspStore.Domain.Entities;
 
 namespace NspStore.Application.Interfaces
 {
@@ -19,7 +18,7 @@ namespace NspStore.Application.Interfaces
         /// <param name="page">Номер страницы (начиная с 1).</param>
         /// <param name="pageSize">Размер страницы (количество элементов).</param>
         /// <returns>Кортеж: список товаров и общее количество.</returns>
-        Task<(IReadOnlyList<Product> Items, int Total)> SearchAsync(
+        Task<(IReadOnlyList<ProductVm> Items, int Total)> SearchAsync(
             string? q, string? categorySlug, int page, int pageSize);
 
         /// <summary>

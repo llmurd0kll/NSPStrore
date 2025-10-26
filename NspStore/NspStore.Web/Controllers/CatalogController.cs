@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NspStore.Application.Interfaces;
-using NspStore.Web.ViewModels;
+using NspStore.Application.ViewsModels;
 
 namespace NspStore.Web.Controllers
 {
@@ -35,7 +35,7 @@ namespace NspStore.Web.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     Slug = p.Slug,
-                    Price = p.Price,
+                    CurrentPrice = p.CurrentPrice,
                     ShortDescription = p.ShortDescription,
                     Sku = p.Sku,
                     Images = p.Images.Select(img => new ProductImageVm

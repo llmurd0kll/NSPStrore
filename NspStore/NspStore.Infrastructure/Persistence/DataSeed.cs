@@ -32,20 +32,36 @@ namespace NspStore.Infrastructure.Persistence
                         Name = "Хлорофилл NSP 946 мл",
                         Sku = "NSP-CHL-946",
                         Slug = "chlorophyll-946",
-                        Price = 49.00m,
                         Category = cat,
                         ShortDescription = "Жидкая форма",
-                        IsActive = true
+                        IsActive = true,
+                        Prices = new List<Price>
+                        {
+                            new Price
+                            {
+                                Value = 49.00m,
+                                Currency = "BYN",
+                                EffectiveFrom = DateTime.UtcNow.AddDays(-1)
+                            }
+                        }
                     },
                     new Product
                     {
                         Name = "Лецитин NSP 120 капсул",
                         Sku = "NSP-LEC-120",
                         Slug = "lecithin-120",
-                        Price = 39.00m,
                         Category = cat,
                         ShortDescription = "Капсулы",
-                        IsActive = true
+                        IsActive = true,
+                        Prices = new List<Price>
+                        {
+                            new Price
+                            {
+                                Value = 39.00m,
+                                Currency = "BYN",
+                                EffectiveFrom = DateTime.UtcNow.AddDays(-1)
+                            }
+                        }
                     }
                 );
 
