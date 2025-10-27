@@ -1,7 +1,8 @@
-﻿@using NspStore.Application.Services
-@model NspStore.Application.ViewsModels.CatalogVm
+﻿@model NspStore.Application.ViewsModels.CatalogVm
 @{
     ViewData["Title"] = "Каталог";
+    ViewData["ActiveCategory"] = Model.Category;
+    ViewData["Q"] = Model.Q;
 }
 
 <section class="section catalog">
@@ -10,45 +11,131 @@
             <h1 class="h1 catalog__title">Каталог NSP</h1>
 
             <form class="catalog__filter form" method="get" aria-label="Фильтр каталога">
-                <div class="form__row form__row--2">
+                <div class="form__row form__row--3">
+                    <!-- Поиск -->
                     <input class="form__input" type="text" name="q" value="@Model.Q" placeholder="Поиск по товарам..." />
+
+                    <!-- Кастомный dropdown -->
+                    <div class="dropdown">
+                        <input type="hidden" name="category" value="@Model.Category" />
+
+                        <button type="button" class="dropdown__toggle">
+                            <span class="dropdown__label">
+                                @(string.IsNullOrEmpty(Model.Category)
+                                                                ? "Все категории"
+                                                                : Model.Categories.FirstOrDefault(c => c.Slug == Model.Category)?.Name)
+                            </span>
+                            <span class="dropdown__arrow">▼</span>
+                        </button>
+
+                        <ul class="dropdown__menu">
+                            <li data-value="" class="@(string.IsNullOrEmpty(Model.Category) ? "active" : "")">Все категории</li>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <li data-value="@cat.Slug" class="@(Model.Category == cat.Slug ? "active" : "")">@cat.Name</li>
+                            }
+                        </ul>
+                    </div>
+
+
+                    <!-- Кнопка -->
                     <button class="btn btn--primary" type="submit">Найти</button>
                 </div>
             </form>
         </header>
 
-        <div class="catalog-grid">
-            @foreach (var p in Model.Items)
-            {
-                var image = p.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
-                <article class="product-card" itemscope itemtype="https://schema.org/Product">
-                    <figure class="product-card__media">
-                        <img class="product-card__image" src="@image" alt="@p.Name" itemprop="image" />
-                    </figure>
+        <div class="catalog__layout">
+            <div class="catalog-grid">
+                @foreach (var p in Model.Items)
+                {
+                    var image = p.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
+                    <article class="product-card card" itemscope itemtype="https://schema.org/Product">
+                        <a class="card__link"
+                           asp-controller="Catalog"
+                           asp-action="Product"
+                           asp-route-slug="@p.Slug"
+                           aria-label="Подробнее о @p.Name">
+                            <figure class="card__media">
+                                <img class="card__image" src="@image" alt="@p.Name" itemprop="image" />
+                            </figure>
 
-                    <div class="product-card__content">
-                        <h2 class="product-card__title" itemprop="name">@p.Name</h2>
+                            <div class="card__body product-card__content">
+                                <h2 class="card__title product-card__title" itemprop="name">@p.Name</h2>
 
-                        <div class="product-card__meta">
-                            <span class="product-card__sku">Артикул: @p.Sku</span>
-                            <span class="product-card__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                <meta itemprop="priceCurrency" content="BYN" />
-                                <span itemprop="price">@p.CurrentPrice.ToString("0.00")</span> BYN
-                            </span>
-                        </div>
-
-                        <div class="product-card__actions">
-                            <a class="btn btn--primary product-card__btn"
-                               asp-controller="Catalog"
-                               asp-action="Product"
-                               asp-route-slug="@p.Slug"
-                               aria-label="Подробнее о @p.Name">
-                                Подробнее
-                            </a>
-                        </div>
-                    </div>
-                </article>
-            }
+                                <div class="product-card__meta">
+                                    <span class="product-card__sku">Артикул: @p.Sku</span>
+                                    <span class="product-card__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                        <meta itemprop="priceCurrency" content="BYN" />
+                                        <span itemprop="price">@p.CurrentPrice.ToString("0.00")</span> BYN
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                }
+            </div>
         </div>
+
+        @if (Model.Total > Model.PageSize)
+        {
+            var totalPages = (int)Math.Ceiling((double)Model.Total / Model.PageSize);
+
+            <nav class="pagination">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <a asp-controller="Catalog"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-q="@Model.Q"
+                       asp-route-category="@Model.Category"
+                       class="@(i == Model.Page ? "active" : "")">
+                        @i
+                    </a>
+                }
+            </nav>
+        }
     </div>
 </section>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".dropdown").forEach(function (dropdown) {
+            const toggle = dropdown.querySelector(".dropdown__toggle");
+            const label = dropdown.querySelector(".dropdown__label");
+            const menu = dropdown.querySelector(".dropdown__menu");
+            const hiddenInput = dropdown.querySelector("input[type=hidden]");
+
+            // Открыть/закрыть меню
+            toggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                dropdown.classList.toggle("open");
+            });
+
+            // Выбор элемента
+            menu.querySelectorAll("li").forEach(function (item) {
+                item.addEventListener("click", function () {
+                    const value = this.getAttribute("data-value");
+                    const text = this.textContent;
+
+                    hiddenInput.value = value;
+                    label.textContent = text;
+
+                    // Подсветка активного
+                    menu.querySelectorAll("li").forEach(li => li.classList.remove("active"));
+                    this.classList.add("active");
+
+                    dropdown.classList.remove("open");
+
+                    // Автоматическая отправка формы
+                    dropdown.closest("form").submit();
+                });
+            });
+        });
+
+        // Закрытие при клике вне
+        document.addEventListener("click", function () {
+            document.querySelectorAll(".dropdown.open").forEach(d => d.classList.remove("open"));
+        });
+    });
+
+</script>

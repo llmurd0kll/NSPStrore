@@ -14,6 +14,7 @@
 @import url('auth.css');
 @import url('profile.css');
 @import url('catalog.css');
+@import url('card.css');
 
 .main {
     padding: var(--gap-24) 0;

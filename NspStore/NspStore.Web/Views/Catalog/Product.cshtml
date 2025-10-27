@@ -1,49 +1,46 @@
-﻿@using NspStore.Application.Services
-@model NspStore.Domain.Entities.Product
+﻿@model NspStore.Application.ViewsModels.ProductDetailsVm
 @{
     ViewData["Title"] = Model.Name;
-    var image = Model.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
 }
 
-<section class="section product" itemscope itemtype="https://schema.org/Product">
+<section class="section product">
     <div class="container">
-        <header class="product__header">
-            <h1 class="h1 product__title" itemprop="name">@Model.Name</h1>
-        </header>
-
         <div class="product__layout">
             <figure class="product__media">
-                <img class="product__image" src="@image" alt="@Model.Name" itemprop="image" />
+                <img src="@(Model.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png")"
+                     alt="@Model.Name"
+                     class="product__image" />
             </figure>
 
-            <section class="product__info">
-                <div class="product__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                    <meta itemprop="priceCurrency" content="BYN" />
-                    <span class="product__price-value" itemprop="price">
-                        @PriceHelper.GetCurrentPrice(Model).ToString("0.00")
-                    </span> BYN
+            <div class="product__content">
+                <h1 class="h1">@Model.Name</h1>
+                <p class="sku">Артикул: @Model.Sku</p>
+
+                <div class="product__prices">
+                    <span class="price">Обычная цена: @Model.CurrentPrice.ToString("0.00") BYN</span><br />
+                    <span class="partner-price">Партнёрская цена: @Model.PartnerPrice.ToString("0.00") BYN</span>
                 </div>
 
-                <div class="product__desc" itemprop="description">
-                    @Model.FullDescription
-                </div>
+                <p class="short">@Model.ShortDescription</p>
 
-                @if (!string.IsNullOrWhiteSpace(Model.CompositionHtml))
+                @if (!string.IsNullOrEmpty(Model.FullDescription))
                 {
-                    <section class="product__composition">
-                        <h2 class="product__subtitle">Состав и дозировка</h2>
-                        @Html.Raw(Model.CompositionHtml)
-                    </section>
+                    <div class="full">@Html.Raw(Model.FullDescription)</div>
                 }
 
-                <footer class="product__actions section__actions">
-                    <form method="post" asp-controller="Cart" asp-action="Add" aria-label="Добавить товар в корзину">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="productId" value="@Model.Id" />
-                        <button class="btn btn--primary" type="submit">В корзину</button>
-                    </form>
-                </footer>
-            </section>
+                @if (!string.IsNullOrEmpty(Model.CompositionHtml))
+                {
+                    <div class="composition">
+                        <h3>Состав</h3>
+                        @Html.Raw(Model.CompositionHtml)
+                    </div>
+                }
+
+                <form asp-controller="Cart" asp-action="Add" method="post">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <button type="submit" class="btn btn--primary">Добавить в корзину</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NspStore.Application.Interfaces;
+using NspStore.Application.Options;
 using NspStore.Application.ViewsModels;
 
 namespace NspStore.Web.Controllers
@@ -11,23 +13,27 @@ namespace NspStore.Web.Controllers
     public class CatalogController : Controller
     {
         private readonly ICatalogService _catalog;
+        private readonly IOptions<StoreOptions> _storeOptions;
 
-        public CatalogController(ICatalogService catalog) => _catalog = catalog;
+        public CatalogController(ICatalogService catalog, IOptions<StoreOptions> storeOptions)
+        {
+            _catalog = catalog;
+            _storeOptions = storeOptions;
+        }
 
         /// <summary>
         /// Список товаров с поиском и пагинацией.
         /// </summary>
-        /// <param name="q">Поисковый запрос (часть названия или описания).</param>
-        /// <param name="category">Slug категории.</param>
-        /// <param name="page">Номер страницы (по умолчанию 1).</param>
         public async Task<IActionResult> Index(string? q, string? category, int page = 1)
         {
             const int pageSize = 12;
 
-            // сервис возвращает доменные сущности
+            // товары
             var (items, total) = await _catalog.SearchAsync(q, category, page, pageSize);
 
-            // маппим Product -> ProductVm
+            // категории
+            var categories = await _catalog.GetCategoriesAsync();
+
             var vm = new CatalogVm
             {
                 Items = items.Select(p => new ProductVm
@@ -35,7 +41,7 @@ namespace NspStore.Web.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     Slug = p.Slug,
-                    CurrentPrice = p.CurrentPrice,
+                    CurrentPrice = _catalog.GetCurrentPrice(p),
                     ShortDescription = p.ShortDescription,
                     Sku = p.Sku,
                     Images = p.Images.Select(img => new ProductImageVm
@@ -43,6 +49,11 @@ namespace NspStore.Web.Controllers
                         Url = img.Url,
                         SortOrder = img.SortOrder
                     }).ToList()
+                }).ToList(),
+                Categories = categories.Select(c => new CategoryVm
+                {
+                    Slug = c.Slug,
+                    Name = c.Name
                 }).ToList(),
                 Total = total,
                 Page = page,
@@ -54,11 +65,9 @@ namespace NspStore.Web.Controllers
             return View(vm);
         }
 
-
         /// <summary>
         /// Страница конкретного товара по slug.
         /// </summary>
-        /// <param name="slug">Slug товара.</param>
         public async Task<IActionResult> Product(string slug)
         {
             if (string.IsNullOrWhiteSpace(slug))
@@ -68,8 +77,28 @@ namespace NspStore.Web.Controllers
             if (product == null)
                 return NotFound();
 
-            // Для диплома лучше сделать ProductVm и маппить сюда
-            return View(product);
+            var currentPrice = _catalog.GetCurrentPrice(product);
+            var discount = (decimal)_storeOptions.Value.Discount;
+
+            var vm = new ProductDetailsVm
+            {
+                Id = product.Id,
+                Slug = product.Slug,
+                Name = product.Name,
+                ShortDescription = product.ShortDescription,
+                FullDescription = product.FullDescription,
+                CompositionHtml = product.CompositionHtml,
+                Sku = product.Sku,
+                CurrentPrice = currentPrice,
+                PartnerPrice = Math.Round(currentPrice * (1 - discount), 2),
+                Images = product.Images.Select(i => new ProductImageVm
+                {
+                    Url = i.Url,
+                    SortOrder = i.SortOrder
+                }).ToList()
+            };
+
+            return View(vm);
         }
     }
 }
