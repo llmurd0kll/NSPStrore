@@ -1,7 +1,7 @@
 # 🛒 NSP Store
 
 ![Build](https://github.com/username/nsp-store/actions/workflows/docker-build.yml/badge.svg)
-![.NET](https://img.shields.io/badge/.NET-8.0-blue)
+![.NET](https://img.shields.io/badge/.NET-9.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 **NSP Store** — проект интернет‑магазина с полноценной пользовательской частью и административной панелью.  
