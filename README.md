@@ -1,6 +1,6 @@
 # 🛒 NSP Store
 
-![Build](https://github.com/username/nsp-store/actions/workflows/docker-build.yml/badge.svg)
+![Build](https://github.com/username/nsp-store/actions/workflows/release.yml/badge.svg)
 ![.NET](https://img.shields.io/badge/.NET-9.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
