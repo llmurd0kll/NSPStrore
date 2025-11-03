@@ -2,7 +2,7 @@
 @using NspStore.Domain.Enums
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Панель управления";
 }
 
 @section Styles {
@@ -16,23 +16,23 @@
         <!-- KPI Cards -->
         <div class="kpi-grid">
             <div class="kpi-card">
-                <div class="kpi-card__label">Товары</div>
+                <div class="kpi-card__label">@Html.DisplayNameFor(m => m.ProductsCount)</div>
                 <div class="kpi-card__value">@Model.ProductsCount</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-card__label">Категории</div>
+                <div class="kpi-card__label">@Html.DisplayNameFor(m => m.CategoriesCount)</div>
                 <div class="kpi-card__value">@Model.CategoriesCount</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-card__label">Пользователи</div>
+                <div class="kpi-card__label">@Html.DisplayNameFor(m => m.UsersCount)</div>
                 <div class="kpi-card__value">@Model.UsersCount</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-card__label">Заказы</div>
+                <div class="kpi-card__label">@Html.DisplayNameFor(m => m.OrdersCount)</div>
                 <div class="kpi-card__value">@Model.OrdersCount</div>
             </div>
             <div class="kpi-card kpi-card--accent">
-                <div class="kpi-card__label">Выручка (опл/отгр)</div>
+                <div class="kpi-card__label">@Html.DisplayNameFor(m => m.TotalRevenue)</div>
                 <div class="kpi-card__value">@Model.TotalRevenue.ToString("0.00") BYN</div>
             </div>
         </div>
@@ -53,11 +53,11 @@
                     <table class="table table--admin">
                         <thead>
                             <tr>
-                                <th class="ta-left">№</th>
-                                <th class="ta-left">Дата</th>
-                                <th class="ta-left">Статус</th>
-                                <th class="ta-left">Адрес</th>
-                                <th class="ta-right">Сумма</th>
+                                <th class="ta-left">@Html.DisplayNameFor(m => m.RecentOrders.First().Id)</th>
+                                <th class="ta-left">@Html.DisplayNameFor(m => m.RecentOrders.First().CreatedAt)</th>
+                                <th class="ta-left">@Html.DisplayNameFor(m => m.RecentOrders.First().Status)</th>
+                                <th class="ta-left">@Html.DisplayNameFor(m => m.RecentOrders.First().ShippingAddress)</th>
+                                <th class="ta-right">@Html.DisplayNameFor(m => m.RecentOrders.First().Total)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,10 +70,15 @@
                                     <span class="order-status @(o.Status switch {
                                         OrderStatus.New => "order-status--new",
                                         OrderStatus.Confirmed => "order-status--paid",
+                                        OrderStatus.Paid => "order-status--paid",
+                                        OrderStatus.Packed => "order-status--packed",
                                         OrderStatus.Shipped => "order-status--shipped",
+                                        OrderStatus.Completed => "order-status--completed",
                                         OrderStatus.Cancelled => "order-status--cancelled",
                                         _ => "order-status--new"
-                                    })">@o.Status</span>
+                                    })">
+                                        @Html.DisplayFor(_ => o.Status)
+                                    </span>
                                 </td>
                                 <td class="muted">@o.ShippingAddress</td>
                                 <td class="ta-right">@o.Total.ToString("0.00") BYN</td>
@@ -100,9 +105,9 @@
                     <table class="table table--admin">
                         <thead>
                             <tr>
-                                <th class="ta-left">Товар</th>
-                                <th class="ta-right">Кол-во</th>
-                                <th class="ta-right">Выручка</th>
+                                <th class="ta-left">@Html.DisplayNameFor(m => m.TopProducts.First().Name)</th>
+                                <th class="ta-right">@Html.DisplayNameFor(m => m.TopProducts.First().Quantity)</th>
+                                <th class="ta-right">@Html.DisplayNameFor(m => m.TopProducts.First().Revenue)</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -1,0 +1,49 @@
+﻿@model NspStore.Domain.Entities.Order
+@{
+    ViewData["Title"] = "Удалить заказ";
+    }
+
+<section class="section">
+    <div class="container">
+        <h1 class="h1">Удалить заказ №@Model.Id</h1>
+
+        <p><strong>@Html.DisplayNameFor(m => m.CreatedAt):</strong> @Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
+        <p><strong>@Html.DisplayNameFor(m => m.Status):</strong> @Html.DisplayFor(m => m.Status)</p>
+        <p>
+            <strong>@Html.DisplayNameFor(m => m.ShippingAddress):</strong>
+            @(Model.ShippingAddress != null ? $"{Model.ShippingAddress.City}, {Model.ShippingAddress.Street}" : "—")
+        </p>
+
+        <h2>Товары</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Items.First().ProductName)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items.First().UnitPrice)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items.First().Quantity)</th>
+                    <th>@Html.DisplayNameFor(m => m.Items.First().LineTotal)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model.Items)
+                    {
+                    <tr>
+                        <td>@i.ProductName</td>
+                        <td>@i.UnitPrice.ToString("0.00") BYN</td>
+                        <td>@i.Quantity</td>
+                        <td>@i.LineTotal.ToString("0.00") BYN</td>
+                    </tr>
+                    }
+            </tbody>
+        </table>
+
+        <div class="section__actions">
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button class="btn btn--danger" type="submit">Удалить</button>
+                <a class="btn btn--secondary" asp-action="Index">Отмена</a>
+            </form>
+        </div>
+    </div>
+</section>

@@ -7,27 +7,31 @@
     <div class="container">
         <div class="product__layout">
             <figure class="product__media">
-                <img src="@(Model.Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png")"
-                     alt="@Model.Name"
-                     class="product__image" />
+                <img src="@Model.MainImage" alt="Изображение товара @Model.Name" class="product__image" />
             </figure>
-
+            @if (Model.Images.Count > 1)
+            {
+                <div class="product__gallery">
+                    @foreach (var img in Model.Images.OrderBy(i => i.SortOrder))
+                    {
+                        <a href="@img.OriginalUrl" class="product__thumb-link">
+                            <img src="@img.ThumbUrl" alt="Миниатюра @Model.Name" class="product__thumb" />
+                        </a>
+                    }
+                </div>
+            }
             <div class="product__content">
                 <h1 class="h1">@Model.Name</h1>
-                <p class="sku">Артикул: @Model.Sku</p>
-
+                <p class="sku">Артикул: @(string.IsNullOrEmpty(Model.Sku) ? "—" : Model.Sku)</p>
                 <div class="product__prices">
                     <span class="price">Обычная цена: @Model.CurrentPrice.ToString("0.00") BYN</span><br />
                     <span class="partner-price">Партнёрская цена: @Model.PartnerPrice.ToString("0.00") BYN</span>
                 </div>
-
                 <p class="short">@Model.ShortDescription</p>
-
                 @if (!string.IsNullOrEmpty(Model.FullDescription))
                 {
                     <div class="full">@Html.Raw(Model.FullDescription)</div>
                 }
-
                 @if (!string.IsNullOrEmpty(Model.CompositionHtml))
                 {
                     <div class="composition">
@@ -35,10 +39,11 @@
                         @Html.Raw(Model.CompositionHtml)
                     </div>
                 }
-
                 <form asp-controller="Cart" asp-action="Add" method="post">
                     <input type="hidden" name="productId" value="@Model.Id" />
-                    <button type="submit" class="btn btn--primary">Добавить в корзину</button>
+                    <button type="submit" class="btn btn--primary" aria-label="Добавить @Model.Name в корзину">
+                        Добавить в корзину
+                    </button>
                 </form>
             </div>
         </div>

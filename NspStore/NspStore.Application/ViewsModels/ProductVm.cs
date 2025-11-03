@@ -39,7 +39,8 @@
         /// Основное изображение (первое по сортировке или плейсхолдер).
         /// </summary>
         public string MainImage =>
-            Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.Url ?? "/images/placeholder.png";
+    Images.OrderBy(i => i.SortOrder).FirstOrDefault()?.OriginalUrl ?? "/images/placeholder.png";
+
 
         /// <summary>
         /// Текущая цена (с учётом истории цен).

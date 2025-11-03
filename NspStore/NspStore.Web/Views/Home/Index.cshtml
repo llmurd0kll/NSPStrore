@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Главная";
-}
+    ViewData["Description"] = "NSP Store — официальный интернет‑магазин Nature’s Sunshine Products. Натуральные БАДы, витамины и товары для здоровья.";
+    }
 
 <section class="section section--hero">
     <div class="container">
@@ -8,7 +9,10 @@
         <p class="muted">Официальный интернет‑магазин Nature’s Sunshine Products</p>
 
         <div class="section__actions">
-            <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
+            <a class="btn btn--primary"
+               asp-controller="Catalog"
+               asp-action="Index"
+               aria-label="Перейти в каталог товаров NSP">
                 Перейти в каталог
             </a>
         </div>

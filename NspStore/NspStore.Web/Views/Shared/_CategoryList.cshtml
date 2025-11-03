@@ -2,28 +2,31 @@
 
 <div class="category-grid">
     <article class="card @(string.IsNullOrEmpty((string?)ViewData["ActiveCategory"]) ? "card--active" : "")">
-        <a class="card__link"
-           asp-controller="Catalog"
-           asp-action="Index">
+        <a class="card__link" asp-controller="Catalog" asp-action="Index"
+            aria-current="@(string.IsNullOrEmpty((string?)ViewData["ActiveCategory"]) ? "page" : null)">
             <div class="card__body">
-                <h3 class="card__title">Все категории</h3>
+                <h3 class="card__title"><span>Все категории</span></h3>
             </div>
         </a>
     </article>
 
-    @foreach (var cat in Model)
+    @if (!Model.Any())
     {
-        var isActive = (string?)ViewData["ActiveCategory"] == cat.Slug;
-        <article class="card @(isActive ? "card--active" : "")">
-            <a class="card__link"
-               asp-controller="Catalog"
-               asp-action="Index"
-               asp-route-category="@cat.Slug"
-               asp-route-q="@ViewData["Q"]">
-                <div class="card__body">
-                    <h3 class="card__title">@cat.Name</h3>
-                </div>
-            </a>
-        </article>
+        <p class="muted">Категории пока не добавлены.</p>
+    }
+    else
+    {
+        @foreach (var cat in Model)
+        {
+            var isActive = (string?)ViewData["ActiveCategory"] == cat.Slug;
+            <article class="card @(isActive ? "card--active" : "")">
+                <a class="card__link" asp-controller="Catalog" asp-action="Index" asp-route-category="@cat.Slug"
+                    asp-route-q="@ViewData["Q"]" aria-current="@(isActive ? "page" : null)">
+                    <div class="card__body">
+                        <h3 class="card__title"><span>@cat.Name</span></h3>
+                    </div>
+                </a>
+            </article>
+        }
     }
 </div>

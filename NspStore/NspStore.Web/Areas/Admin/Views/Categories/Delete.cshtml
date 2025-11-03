@@ -2,16 +2,15 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Удалить категорию";
-}
+    }
 
 <section class="section admin-category">
     <div class="container">
         <h1 class="h1">Удалить категорию</h1>
 
-        <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
-
         <p class="warning-text">
-            Вы уверены, что хотите удалить категорию <strong>«@Model.Name»</strong>?
+            Вы уверены, что хотите удалить @Html.DisplayNameFor(m => m.Name)
+            <strong>«@Model.Name»</strong>?
         </p>
 
         <form asp-action="Delete" method="post" class="form">

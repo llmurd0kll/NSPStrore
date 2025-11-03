@@ -2,7 +2,7 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Категории";
-}
+    }
 
 <section class="section admin-categories">
     <div class="container">
@@ -16,25 +16,25 @@
         </div>
 
         @if (!Model.Any())
-        {
+            {
             <div class="alert alert--info">
                 Категорий пока нет.
             </div>
-        }
+            }
         else
-        {
+            {
             <table class="table table--admin">
                 <thead>
                     <tr>
-                        <th class="ta-right">Id</th>
-                        <th class="ta-left">Название</th>
-                        <th class="ta-left">Slug</th>
+                        <th class="ta-right">@Html.DisplayNameFor(m => m.First().Id)</th>
+                        <th class="ta-left">@Html.DisplayNameFor(m => m.First().Name)</th>
+                        <th class="ta-left">@Html.DisplayNameFor(m => m.First().Slug)</th>
                         <th class="ta-right">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var c in Model)
-                    {
+                        {
                         <tr>
                             <td class="ta-right">@c.Id</td>
                             <td>@c.Name</td>
@@ -44,18 +44,18 @@
                                 <a class="btn btn--sm btn--danger" asp-action="Delete" asp-route-id="@c.Id">Удалить</a>
                             </td>
                         </tr>
-                    }
+                        }
                 </tbody>
             </table>
-        }
+            }
 
         @if (TempData["Error"] is string err)
-        {
+            {
             <div class="alert alert--error">@err</div>
-        }
+            }
         @if (TempData["Success"] is string ok)
-        {
+            {
             <div class="alert alert--success">@ok</div>
-        }
+            }
     </div>
 </section>

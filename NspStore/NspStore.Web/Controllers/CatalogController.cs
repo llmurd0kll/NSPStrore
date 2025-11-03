@@ -46,7 +46,10 @@ namespace NspStore.Web.Controllers
                     Sku = p.Sku,
                     Images = p.Images.Select(img => new ProductImageVm
                     {
-                        Url = img.Url,
+                        Id = img.Id,
+                        OriginalUrl = img.OriginalUrl,
+                        ThumbUrl = img.ThumbUrl,
+                        MediumUrl = img.MediumUrl,
                         SortOrder = img.SortOrder
                     }).ToList()
                 }).ToList(),
@@ -93,7 +96,10 @@ namespace NspStore.Web.Controllers
                 PartnerPrice = Math.Round(currentPrice * (1 - discount), 2),
                 Images = product.Images.Select(i => new ProductImageVm
                 {
-                    Url = i.Url,
+                    Id = i.Id,
+                    OriginalUrl = i.OriginalUrl,
+                    ThumbUrl = i.ThumbUrl,
+                    MediumUrl = i.MediumUrl,
                     SortOrder = i.SortOrder
                 }).ToList()
             };

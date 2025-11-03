@@ -2,7 +2,7 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Создать категорию";
-}
+    }
 
 <section class="section admin-category">
     <div class="container">
@@ -20,7 +20,7 @@
             </div>
 
             <div class="form__row">
-                <label asp-for="Slug" class="form__label">Slug (необязательно)</label>
+                <label asp-for="Slug" class="form__label"></label>
                 <input asp-for="Slug" class="input" />
                 <span class="input__error" asp-validation-for="Slug"></span>
             </div>
@@ -33,5 +33,5 @@
     </div>
 </section>
 
-@section Scripts {
-}
+    @section Scripts {
+    }

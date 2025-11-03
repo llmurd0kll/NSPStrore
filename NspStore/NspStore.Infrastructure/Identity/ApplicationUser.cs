@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NspStore.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace NspStore.Infrastructure.Identity
 {
@@ -12,6 +13,7 @@ namespace NspStore.Infrastructure.Identity
         /// <summary>
         /// Полное имя пользователя.
         /// </summary>
+        [Display(Name = "Полное имя")]
         public string? FullName { get; set; }
 
         /// <summary>

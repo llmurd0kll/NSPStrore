@@ -2,7 +2,7 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     ViewData["Title"] = "Удалить изображение";
-}
+    }
 
 <section class="section admin-product-images">
     <div class="container">
@@ -13,12 +13,13 @@
         </div>
 
         <div class="preview">
-            <img src="@Model.Url" alt="preview" class="preview__img" />
-            <p><strong>URL:</strong> @Model.Url</p>
-            <p><strong>Порядок:</strong> @Model.SortOrder</p>
+            <img src="@Model.OriginalUrl" alt="preview" class="preview__img" />
+            <p><strong>@Html.DisplayNameFor(m => m.OriginalUrl):</strong> @Model.OriginalUrl</p>
+            <p><strong>@Html.DisplayNameFor(m => m.SortOrder):</strong> @Model.SortOrder</p>
         </div>
 
         <form asp-action="Delete" method="post" class="form">
+            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
             <div class="form__actions">
                 <button type="submit" class="btn btn--danger">Удалить</button>

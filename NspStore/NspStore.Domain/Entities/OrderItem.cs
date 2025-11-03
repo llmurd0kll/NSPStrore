@@ -1,11 +1,13 @@
-﻿namespace NspStore.Domain.Entities
-{
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NspStore.Domain.Entities
+    {
     /// <summary>
     /// Позиция заказа (конкретный товар и его количество).
     /// Хранит цену и название на момент покупки.
     /// </summary>
     public class OrderItem
-    {
+        {
         /// <summary>
         /// Уникальный идентификатор позиции (PK).
         /// </summary>
@@ -24,6 +26,7 @@
         /// <summary>
         /// Внешний ключ на продукт.
         /// </summary>
+        [Display(Name = "Товар")]
         public int ProductId { get; set; }
 
         /// <summary>
@@ -33,32 +36,34 @@
 
         /// <summary>
         /// Название товара на момент покупки.
-        /// Фиксируется, чтобы не зависеть от изменений в каталоге.
         /// </summary>
+        [Display(Name = "Название товара")]
         public string ProductName { get; set; } = null!;
 
         /// <summary>
         /// Цена за единицу товара на момент покупки.
         /// </summary>
+        [Display(Name = "Цена за единицу")]
         public decimal UnitPrice { get; set; }
 
         /// <summary>
         /// Количество товара в заказе.
         /// </summary>
+        [Display(Name = "Количество")]
         public int Quantity { get; set; }
 
         /// <summary>
         /// Итоговая сумма по позиции (UnitPrice × Quantity).
-        /// Вычисляется при добавлении/изменении позиции.
         /// </summary>
+        [Display(Name = "Сумма")]
         public decimal LineTotal { get; private set; }
 
         /// <summary>
         /// Пересчитывает итоговую сумму позиции.
         /// </summary>
         public void RecalculateLineTotal()
-        {
+            {
             LineTotal = UnitPrice * Quantity;
+            }
         }
     }
-}

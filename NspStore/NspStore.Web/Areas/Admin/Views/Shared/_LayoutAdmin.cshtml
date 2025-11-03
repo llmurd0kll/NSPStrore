@@ -4,6 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="utf-8" />
     <title>@title - NSP Store Admin</title>
@@ -15,57 +16,63 @@
     <link rel="stylesheet" href="~/css/layout.css" />
     <link rel="stylesheet" href="~/css/components.css" />
     <link rel="stylesheet" href="~/css/admin.css" />
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <meta name="robots" content="noindex, nofollow" />
     @RenderSection("Styles", required: false)
 </head>
+
 <body>
     <header class="header">
-    <div class="container">
-        <div class="navbar">
-            <!-- Логотип -->
-            <a class="navbar__brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                NSP Store Admin
-            </a>
-
-            <!-- Кнопка гамбургера -->
-            <button class="navbar__toggle" type="button" id="menuToggle">☰</button>
-
-            <!-- Навигация -->
-            <nav class="navbar__menu" id="mainMenu">
-                <a class="navbar__link" asp-area="" asp-controller="Home" asp-action="Index" target="_blank">
-                    🏠 На сайт
-                </a>
-                <a class="navbar__link" asp-area="Admin" asp-controller="Products" asp-action="Index">
-                    📦 Товары
-                </a>
-                <a class="navbar__link" asp-area="Admin" asp-controller="Categories" asp-action="Index">
-                    📂 Категории
-                </a>
-                <a class="navbar__link" asp-area="Admin" asp-controller="Orders" asp-action="Index">
-                    🧾 Заказы
-                </a>
-                <a class="navbar__link" asp-area="Admin" asp-controller="Users" asp-action="Index">
-                    👤 Пользователи
+        <div class="container">
+            <div class="navbar">
+                <!-- Логотип -->
+                <a class="navbar__brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    NSP Store Admin
                 </a>
 
-                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="navbar__form">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="navbar__link navbar__logout">Выйти</button>
-                </form>
-            </nav>
+                <!-- Кнопка гамбургера -->
+                <button class="navbar__toggle" type="button" id="menuToggle" aria-label="Открыть меню">☰</button>
+
+                <!-- Навигация -->
+                <nav class="navbar__menu" id="mainMenu">
+                    <a class="navbar__link" asp-area="" asp-controller="Home" asp-action="Index" target="_blank">
+                        🏠 На сайт
+                    </a>
+                    <a class="navbar__link" asp-area="Admin" asp-controller="Products" asp-action="Index">
+                        📦 Товары
+                    </a>
+                    <a class="navbar__link" asp-area="Admin" asp-controller="Categories" asp-action="Index">
+                        📂 Категории
+                    </a>
+                    <a class="navbar__link" asp-area="Admin" asp-controller="Orders" asp-action="Index">
+                        🧾 Заказы
+                    </a>
+                    <a class="navbar__link" asp-area="Admin" asp-controller="Users" asp-action="Index">
+                        👤 Пользователи
+                    </a>
+
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="navbar__form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="navbar__link navbar__logout">Выйти</button>
+                    </form>
+                </nav>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
 
     <div class="admin-layout">
         <!-- Sidebar -->
         <aside class="admin-sidebar">
             <nav class="admin-menu">
-                <a class="admin-menu__link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">📊 Dashboard</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">📊
+                    Dashboard</a>
                 <a class="admin-menu__link" asp-area="Admin" asp-controller="Products" asp-action="Index">📦 Товары</a>
-                <a class="admin-menu__link" asp-area="Admin" asp-controller="Categories" asp-action="Index">📂 Категории</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Categories" asp-action="Index">📂
+                    Категории</a>
                 <a class="admin-menu__link" asp-area="Admin" asp-controller="Orders" asp-action="Index">🧾 Заказы</a>
-                <a class="admin-menu__link" asp-area="Admin" asp-controller="Users" asp-action="Index">👤 Пользователи</a>
+                <a class="admin-menu__link" asp-area="Admin" asp-controller="Users" asp-action="Index">👤
+                    Пользователи</a>
             </nav>
         </aside>
 

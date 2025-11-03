@@ -15,8 +15,16 @@ namespace NspStore.Infrastructure.Configurations
             // Первичный ключ
             builder.HasKey(pi => pi.Id);
 
-            // Ограничение для URL
-            builder.Property(pi => pi.Url)
+            // Ограничения для URL-ов
+            builder.Property(pi => pi.OriginalUrl)
+                   .HasMaxLength(500)
+                   .IsRequired();
+
+            builder.Property(pi => pi.ThumbUrl)
+                   .HasMaxLength(500)
+                   .IsRequired();
+
+            builder.Property(pi => pi.MediumUrl)
                    .HasMaxLength(500)
                    .IsRequired();
 

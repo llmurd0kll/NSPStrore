@@ -1,7 +1,7 @@
 ﻿@model List<NspStore.Domain.Entities.Address>
 @{
     ViewData["Title"] = "Мои адреса";
-}
+    }
 
 <section class="section addresses">
     <div class="container">
@@ -12,11 +12,11 @@
         </div>
 
         @if (!Model.Any())
-        {
+            {
             <p class="muted">Адреса не добавлены.</p>
-        }
+            }
         else
-        {
+            {
             <table class="table addresses__table">
                 <thead>
                     <tr>
@@ -30,33 +30,33 @@
                 </thead>
                 <tbody>
                     @foreach (var a in Model)
-                    {
-                        <tr>
+                        {
+                        <tr class="@(a.IsDefault ? "row--highlight" : "")">
                             <td>@a.City</td>
                             <td>@a.Street</td>
-                            <td>@a.Apartment</td>
-                            <td>@a.PostalCode</td>
+                            <td>@(string.IsNullOrEmpty(a.Apartment) ? "—" : a.Apartment)</td>
+                            <td>@(string.IsNullOrEmpty(a.PostalCode) ? "—" : a.PostalCode)</td>
                             <td>
                                 @if (a.IsDefault)
-                                {
+                                    {
                                     <span class="badge badge--success">Да</span>
-                                }
+                                    }
                                 else
-                                {
+                                    {
                                     <span class="badge badge--neutral">Нет</span>
-                                }
+                                    }
                             </td>
                             <td class="addresses__actions">
                                 <a class="btn btn--secondary btn--sm" asp-action="Edit" asp-route-id="@a.Id">Изменить</a>
                                 <form method="post" asp-action="Delete" asp-route-id="@a.Id" class="inline-form">
                                     @Html.AntiForgeryToken()
-                                    <button class="btn btn--secondary btn--sm" type="submit">Удалить</button>
+                                    <button class="btn btn--secondary btn--sm" type="submit" onclick="return confirm('Удалить этот адрес?');">Удалить</button>
                                 </form>
                             </td>
                         </tr>
-                    }
+                        }
                 </tbody>
             </table>
-        }
+            }
     </div>
 </section>

@@ -10,18 +10,21 @@
         <h1 class="h1">Заказ №@Model.Id</h1>
 
         <div class="admin-order__info">
-            <p><strong>Дата:</strong> @Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
-            <p><strong>Адрес доставки:</strong> @Model.ShippingAddress</p>
+            <p><strong>@Html.DisplayNameFor(m => m.CreatedAt):</strong> @Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</p>
+            <p><strong>@Html.DisplayNameFor(m => m.ShippingAddress):</strong> @Model.ShippingAddress</p>
             <p>
-                <strong>Статус:</strong>
+                <strong>@Html.DisplayNameFor(m => m.Status):</strong>
                 <span class="order-status @(Model.Status switch {
                     OrderStatus.New => "order-status--new",
                     OrderStatus.Confirmed => "order-status--paid",
+                    OrderStatus.Paid => "order-status--paid",
+                    OrderStatus.Packed => "order-status--packed",
                     OrderStatus.Shipped => "order-status--shipped",
+                    OrderStatus.Completed => "order-status--completed",
                     OrderStatus.Cancelled => "order-status--cancelled",
                     _ => "order-status--new"
                 })">
-                    @Model.Status
+                    @Html.DisplayFor(m => m.Status)
                 </span>
             </p>
         </div>
@@ -30,10 +33,10 @@
         <table class="table table--admin admin-order__items">
             <thead>
                 <tr>
-                    <th class="ta-left">Название</th>
-                    <th class="ta-right">Цена</th>
-                    <th class="ta-right">Кол-во</th>
-                    <th class="ta-right">Сумма</th>
+                    <th class="ta-left">@Html.DisplayNameFor(m => m.Items.First().ProductName)</th>
+                    <th class="ta-right">@Html.DisplayNameFor(m => m.Items.First().Price)</th>
+                    <th class="ta-right">@Html.DisplayNameFor(m => m.Items.First().Qty)</th>
+                    <th class="ta-right">@Html.DisplayNameFor(m => m.Items.First().LineTotal)</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +65,9 @@
                 <select id="status" name="status" class="input">
                     @foreach (OrderStatus s in Enum.GetValues(typeof(OrderStatus)))
                     {
-                        <option value="@((int)s)" selected="@(s == Model.Status)">@s</option>
+                        <option value="@((int)s)" selected="@(s == Model.Status)">
+                            @Html.DisplayFor(_ => s)
+                        </option>
                     }
                 </select>
             </div>
