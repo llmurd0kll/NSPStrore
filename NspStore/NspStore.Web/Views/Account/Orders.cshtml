@@ -2,23 +2,24 @@
 @using NspStore.Domain.Enums
 @{
     ViewData["Title"] = "Мои заказы";
-}
+    var totalAmount = Model?.Sum(o => o.Total) ?? 0m;
+    }
 
 <section class="section orders">
     <div class="container">
         <h1 class="h1">Мои заказы</h1>
 
         @if (Model == null || Model.Count == 0)
-        {
+            {
             <p class="muted">У вас пока нет заказов.</p>
             <div class="section__actions">
                 <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
                     Перейти в каталог
                 </a>
             </div>
-        }
+            }
         else
-        {
+            {
             <table class="table orders__table">
                 <thead>
                     <tr>
@@ -31,49 +32,60 @@
                 </thead>
                 <tbody>
                     @foreach (var o in Model)
-                    {
+                        {
                         <tr>
-                            <td>@o.Id</td>
+                            <td>
+                                <!-- ID кликабельный, если будет страница деталей -->
+                                <a asp-controller="Orders" asp-action="Details" asp-route-id="@o.Id">
+                                    @o.Id
+                                </a>
+                            </td>
                             <td>@o.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
                             <td>@o.Total.ToString("0.00") BYN</td>
                             <td>
-                                @{
+                                    @{
                                     string statusText = o.Status switch
-                                    {
-                                        OrderStatus.New => "Новый",
-                                        OrderStatus.Confirmed => "Подтверждён",
-                                        OrderStatus.Packed => "Упакован",
-                                        OrderStatus.Shipped => "Отгружен",
-                                        OrderStatus.Completed => "Завершён",
-                                        OrderStatus.Cancelled => "Отменён",
-                                        _ => o.Status.ToString()
-                                    };
+                                        {
+                                            OrderStatus.New => "Новый",
+                                            OrderStatus.Confirmed => "Подтверждён",
+                                            OrderStatus.Packed => "Упакован",
+                                            OrderStatus.Shipped => "Отгружен",
+                                            OrderStatus.Completed => "Завершён",
+                                            OrderStatus.Cancelled => "Отменён",
+                                            _ => o.Status.ToString()
+                                            };
 
                                     string badgeClass = o.Status switch
-                                    {
-                                        OrderStatus.New => "badge--neutral",
-                                        OrderStatus.Confirmed => "badge--warning",
-                                        OrderStatus.Packed => "badge--warning",
-                                        OrderStatus.Shipped => "badge--warning",
-                                        OrderStatus.Completed => "badge--success",
-                                        OrderStatus.Cancelled => "badge--danger",
-                                        _ => "badge--neutral"
-                                    };
-                                }
+                                        {
+                                            OrderStatus.New => "badge--neutral",
+                                            OrderStatus.Confirmed => "badge--warning",
+                                            OrderStatus.Packed => "badge--warning",
+                                            OrderStatus.Shipped => "badge--warning",
+                                            OrderStatus.Completed => "badge--success",
+                                            OrderStatus.Cancelled => "badge--danger",
+                                            _ => "badge--neutral"
+                                            };
+                                    }
                                 <span class="badge @badgeClass">@statusText</span>
                             </td>
                             <td>
                                 <ul class="orders__items">
                                     @foreach (var i in o.Items ?? Enumerable.Empty<NspStore.Domain.Entities.OrderItem>())
-                                    {
+                                        {
                                         <li>@i.ProductName × @i.Quantity</li>
-                                    }
+                                        }
                                 </ul>
                             </td>
                         </tr>
-                    }
+                        }
                 </tbody>
             </table>
-        }
+
+            <!-- Итоговая строка -->
+            <div class="orders__summary">
+                <p><strong>Всего заказов:</strong> @Model.Count</p>
+                <p><strong>Общая сумма:</strong> @totalAmount.ToString("0.00") BYN</p>
+            </div>
+            }
     </div>
 </section>

@@ -2,24 +2,15 @@
     ViewData["Title"] = "Заказ оформлен";
 }
 
-<section class="section order-success">
+<section class="section success">
     <div class="container">
         <h1 class="h1">Спасибо за заказ!</h1>
-
-        <p class="order-success__text">
-            Ваш заказ <strong>№@ViewBag.OrderId</strong> успешно создан.
+        <p class="order-number" aria-live="polite">
+            Ваш заказ №@ViewBag.OrderId успешно оформлен.
         </p>
-        <p class="muted">
-            Мы свяжемся с вами для подтверждения и уточнения деталей доставки.
-        </p>
-
-        <div class="order-success__actions section__actions">
-            <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
-                Вернуться в каталог
-            </a>
-            <a class="btn btn--secondary" asp-controller="Cart" asp-action="Index">
-                Открыть корзину
-            </a>
+        <div class="section__actions">
+            <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">Вернуться в каталог</a>
+            <a class="btn btn--secondary" asp-controller="Account" asp-action="Orders">Мои заказы</a>
         </div>
     </div>
 </section>

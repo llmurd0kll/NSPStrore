@@ -1,45 +1,75 @@
-﻿@model List<NspStore.Web.Services.CartItemDto>
+﻿@model NspStore.Application.ViewModels.CheckoutVm
 @{
     ViewData["Title"] = "Оформление заказа";
-    var addresses = (List<NspStore.Domain.Entities.Address>)ViewBag.Addresses;
 }
 
 <section class="section checkout">
     <div class="container">
         <h1 class="h1">Оформление заказа</h1>
 
-        @if (!addresses.Any())
+        @if (!Model.Items.Any())
         {
-            <p class="muted">У вас нет сохранённых адресов. Добавьте адрес перед оформлением.</p>
-            <div class="section__actions">
-                <a class="btn btn--primary" asp-controller="Addresses" asp-action="Index">
-                    Перейти к адресам
-                </a>
-            </div>
+            <p class="muted">Ваша корзина пуста.</p>
+            <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">Перейти в каталог</a>
         }
         else
         {
-            <form method="post" asp-action="Place" class="form">
+            <h2>Ваши товары</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Кол-во</th>
+                        <th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Price.ToString("0.00") BYN</td>
+                            <td>@item.Qty</td>
+                            <td>@(item.Price* item.Qty).ToString("0.00") BYN</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="checkout__summary">
+                <p class="cart__total"><strong>Итого:</strong> @Model.Total.ToString("0.00") BYN</p>
+            </div>
+
+            <form asp-action="Place" method="post">
                 @Html.AntiForgeryToken()
 
-                <div class="form__row">
-                    <label for="shippingAddressId" class="form__label">Адрес доставки</label>
-                    <select id="shippingAddressId" class="form__select" name="shippingAddressId" required>
-                        @foreach (var a in addresses)
-                        {
-                            <option value="@a.Id">@a.City, @a.Street @a.Apartment</option>
-                        }
-                    </select>
+                <!-- Общие ошибки -->
+                <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
+
+                <div class="form__group">
+                    <label asp-for="SelectedAddressId" class="form__label">Адрес доставки</label>
+
+                    @if (Model.Addresses != null && Model.Addresses.Any())
+                    {
+                        <select asp-for="SelectedAddressId" asp-items="@(new SelectList(Model.Addresses, "Id", "FullAddress"))"
+                            class="form__input"></select>
+                    }
+                    else
+                    {
+                        <p class="muted">У вас пока нет сохранённых адресов доставки.</p>
+                        <a asp-controller="Addresses" asp-action="Create" class="btn btn--secondary">Добавить адрес</a>
+                    }
+
+                    <span asp-validation-for="SelectedAddressId" class="form__error"></span>
                 </div>
 
-                <div class="form__row">
-                    <label for="comment" class="form__label">Комментарий</label>
-                    <textarea id="comment" class="form__textarea" name="comment" rows="3"></textarea>
+                <div class="form__group">
+                    <label asp-for="Comment" class="form__label">Комментарий</label>
+                    <textarea asp-for="Comment" class="form__input"></textarea>
                 </div>
 
-                <div class="section__actions">
-                    <button class="btn btn--primary" type="submit">Подтвердить заказ</button>
-                </div>
+                <button type="submit" class="btn btn--primary" aria-label="Подтвердить заказ">Подтвердить заказ</button>
             </form>
         }
     </div>

@@ -86,9 +86,15 @@ namespace NspStore.Infrastructure.Data
                         Sku = "NSP-001",
                         CategoryId = categories[0].Id,
                         Images = new List<ProductImage>
-                        {
-                            new ProductImage { Url = "/images/products/omega3.jpg", SortOrder = 1 }
-                        },
+{
+    new ProductImage
+    {
+        OriginalUrl = "/images/products/omega3.jpg",
+        ThumbUrl = "/images/products/omega3.jpg",
+        MediumUrl = "/images/products/omega3.jpg",
+        SortOrder = 1
+    }
+},
                         Prices = new List<Price>
                         {
                             new Price { Value = 25.50m, Currency = "BYN", EffectiveFrom = DateTime.UtcNow.AddDays(-1) }
@@ -102,9 +108,15 @@ namespace NspStore.Infrastructure.Data
                         Sku = "NSP-002",
                         CategoryId = categories[1].Id,
                         Images = new List<ProductImage>
-                        {
-                            new ProductImage { Url = "/images/products/vitamin-c.jpg", SortOrder = 1 }
-                        },
+{
+    new ProductImage
+    {
+        OriginalUrl = "/images/products/vitaminС.jpg",
+        ThumbUrl = "/images/products/vitaminС.jpg",
+        MediumUrl = "/images/products/vitaminС.jpg",
+        SortOrder = 1
+    }
+},
                         Prices = new List<Price>
                         {
                             new Price { Value = 12.00m, Currency = "BYN", EffectiveFrom = DateTime.UtcNow.AddDays(-1) }
@@ -119,7 +131,13 @@ namespace NspStore.Infrastructure.Data
                         CategoryId = categories[2].Id,
                         Images = new List<ProductImage>
                         {
-                            new ProductImage { Url = "/images/products/face-cream.jpg", SortOrder = 1 }
+                            new ProductImage
+    {
+        OriginalUrl = "/images/products/facecream.jpg",
+        ThumbUrl = "/images/products/facecream.jpg",
+        MediumUrl = "/images/products/facecream.jpg",
+        SortOrder = 1
+    }
                         },
                         Prices = new List<Price>
                         {

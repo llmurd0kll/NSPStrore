@@ -2,7 +2,7 @@
 @model IEnumerable<NspStore.Domain.Entities.Product>
 @{
     ViewData["Title"] = "Товары";
-}
+    }
 
 <section class="section admin-products">
     <div class="container">
@@ -14,46 +14,58 @@
         <table class="table table--striped">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Id)</th>
                     <th>Фото</th>
-                    <th>Название</th>
-                    <th>SKU</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Name)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Sku)</th>
                     <th>Цена</th>
-                    <th>Категория</th>
-                    <th>Фото</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Category.Name)</th>
+                    <th>Кол-во фото</th>
                     <th class="text-right">Действия</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var p in Model)
-                {
+                    {
                     <tr>
                         <td>@p.Id</td>
                         <td>
                             @if (p.Images?.Any() == true)
-                            {
-                                <img src="@p.Images.First().Url" alt="@p.Name" width="50" class="thumb" />
-                            }
+                                {
+                                <img src="@p.Images.First().ThumbUrl" alt="@p.Name" width="50" class="thumb" />
+                                }
                             else
-                            {
+                                {
                                 <span class="muted">—</span>
-                            }
+                                }
                         </td>
                         <td>@p.Name</td>
                         <td>@p.Sku</td>
                         <td>@PriceHelper.GetCurrentPrice(p).ToString("0.00") BYN</td>
                         <td>
-                            <span class="badge">@p.Category?.Name</span>
+                            @if (p.Category != null)
+                                {
+                                <a asp-area="Admin" asp-controller="Categories" asp-action="Edit" asp-route-id="@p.CategoryId">
+                                    @p.Category.Name
+                                </a>
+                                }
+                            else
+                                {
+                                <span class="muted">—</span>
+                                }
                         </td>
-                        <td>@(p.Images?.Count ?? 0)</td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="ProductImages" asp-action="Index" asp-route-productId="@p.Id">
+                                @(p.Images?.Count ?? 0)
+                            </a>
+                        </td>
                         <td class="text-right">
                             <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn--sm btn--info" title="Редактировать">✏️</a>
                             <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn--sm btn--danger" title="Удалить">🗑️</a>
                             <a asp-area="Admin" asp-controller="ProductImages" asp-action="Index" asp-route-productId="@p.Id" class="btn btn--sm btn--secondary" title="Изображения">📷</a>
                         </td>
                     </tr>
-                }
-
+                    }
             </tbody>
         </table>
     </div>

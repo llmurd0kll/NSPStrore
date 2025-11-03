@@ -35,6 +35,15 @@
                 <span asp-validation-for="NewPrice" class="input__error"></span>
             </div>
 
+            <div class="form__row">
+                <label asp-for="Currency" class="form__label">Валюта</label>
+                <select asp-for="Currency" class="input">
+                    <option value="BYN">BYN</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+                <span asp-validation-for="Currency" class="input__error"></span>
+            </div>
 
             <div class="form__row">
                 <label asp-for="ShortDescription" class="form__label"></label>

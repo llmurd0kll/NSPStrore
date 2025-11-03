@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace NspStore.Domain.Entities
 {
@@ -17,17 +18,20 @@ namespace NspStore.Domain.Entities
         /// ЧПУ-строка (slug) для категории.
         /// Используется в URL (например: /catalog/vitamins).
         /// </summary>
+        [Display(Name = "Ссылка в url например: /catalog/vitamins)")]
         public string Slug { get; set; } = null!;
 
         /// <summary>
         /// Название категории (отображается пользователю).
         /// </summary>
+        [Display(Name = "Название категории")]
         public string Name { get; set; } = null!;
 
         /// <summary>
         /// Описание категории (опционально).
         /// Может использоваться для SEO или пояснения пользователю.
         /// </summary>
+        [Display(Name = "Описание")]
         public string? Description { get; set; }
 
         /// <summary>

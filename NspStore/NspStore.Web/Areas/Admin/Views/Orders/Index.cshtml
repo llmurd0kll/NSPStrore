@@ -14,10 +14,10 @@
             <form method="get" class="form-inline">
                 <select name="status" class="input">
                     <option value="">Все</option>
-                    <option value="New">Новые</option>
-                    <option value="Paid">Оплаченные</option>
-                    <option value="Shipped">Отправленные</option>
-                    <option value="Cancelled">Отменённые</option>
+                    @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+                    {
+                        <option value="@status">@Html.DisplayFor(_ => status)</option>
+                    }
                 </select>
                 <button type="submit" class="btn btn--primary">Фильтр</button>
             </form>
@@ -34,11 +34,11 @@
             <table class="table table--admin orders-table">
                 <thead>
                     <tr>
-                        <th class="ta-left">№</th>
-                        <th class="ta-left">Дата</th>
-                        <th class="ta-left">Адрес</th>
-                        <th class="ta-left">Статус</th>
-                        <th class="ta-right">Сумма</th>
+                        <th class="ta-left">@Html.DisplayNameFor(m => m.First().Id)</th>
+                        <th class="ta-left">@Html.DisplayNameFor(m => m.First().CreatedAt)</th>
+                        <th class="ta-left">@Html.DisplayNameFor(m => m.First().ShippingAddress)</th>
+                        <th class="ta-left">@Html.DisplayNameFor(m => m.First().Status)</th>
+                        <th class="ta-right">@Html.DisplayNameFor(m => m.First().Total)</th>
                         <th class="ta-right">Действия</th>
                     </tr>
                 </thead>
@@ -53,11 +53,14 @@
                                 <span class="order-status @(o.Status switch {
                                     OrderStatus.New => "order-status--new",
                                     OrderStatus.Confirmed => "order-status--paid",
+                                    OrderStatus.Paid => "order-status--paid",
+                                    OrderStatus.Packed => "order-status--packed",
                                     OrderStatus.Shipped => "order-status--shipped",
+                                    OrderStatus.Completed => "order-status--completed",
                                     OrderStatus.Cancelled => "order-status--cancelled",
                                     _ => "order-status--new"
                                 })">
-                                    @o.Status
+                                    @Html.DisplayFor(_ => o.Status)
                                 </span>
                             </td>
                             <td class="ta-right">@o.Total.ToString("0.00") BYN</td>

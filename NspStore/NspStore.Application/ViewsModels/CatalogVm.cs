@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// ViewModel для страницы каталога.
-    /// Содержит список товаров и параметры пагинации/фильтрации.
+    /// Содержит список товаров, категории и параметры пагинации/фильтрации.
     /// </summary>
     public class CatalogVm
     {
@@ -10,6 +10,11 @@
         /// Список товаров для отображения.
         /// </summary>
         public IReadOnlyList<ProductVm> Items { get; set; } = new List<ProductVm>();
+
+        /// <summary>
+        /// Список категорий для фильтрации.
+        /// </summary>
+        public IReadOnlyList<CategoryVm> Categories { get; set; } = new List<CategoryVm>();
 
         /// <summary>
         /// Общее количество товаров (для пагинации).
@@ -35,5 +40,14 @@
         /// Slug выбранной категории.
         /// </summary>
         public string? Category { get; set; }
+    }
+
+    /// <summary>
+    /// Упрощённая модель категории для фильтрации.
+    /// </summary>
+    public class CategoryVm
+    {
+        public string Slug { get; set; } = null!;
+        public string Name { get; set; } = null!;
     }
 }

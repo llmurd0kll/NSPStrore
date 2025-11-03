@@ -1,77 +1,47 @@
-﻿namespace NspStore.Domain.Entities
-{
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NspStore.Domain.Entities
+    {
     /// <summary>
     /// Товар в интернет-магазине NSP Store.
-    /// Содержит основные данные, цену, изображения и атрибуты.
     /// </summary>
     public class Product
-    {
-        /// <summary>
-        /// Уникальный идентификатор товара (PK).
-        /// </summary>
+        {
+        [Key]
         public int Id { get; set; }
 
-
-        /// <summary>
-        /// Артикул (SKU) — уникальный код товара.
-        /// Используется для внутреннего учёта и поиска.
-        /// </summary>
+        [Display(Name = "Артикул (SKU)")]
+        [Required(ErrorMessage = "Введите артикул товара")]
         public string Sku { get; set; } = null!;
 
-        /// <summary>
-        /// ЧПУ-строка (slug) для формирования URL.
-        /// Например: /catalog/vitamins.
-        /// </summary>
+        [Display(Name = "Ссылка (Slug)")]
         public string Slug { get; set; } = null!;
 
-        /// <summary>
-        /// Название товара.
-        /// </summary>
+        [Display(Name = "Название товара")]
+        [Required(ErrorMessage = "Введите название товара")]
         public string Name { get; set; } = null!;
 
-        /// <summary>
-        /// Краткое описание (для карточки товара).
-        /// </summary>
+        [Display(Name = "Краткое описание")]
         public string? ShortDescription { get; set; }
 
-        /// <summary>
-        /// Полное описание (для страницы товара).
-        /// </summary>
+        [Display(Name = "Полное описание")]
         public string? FullDescription { get; set; }
 
-        /// <summary>
-        /// Состав товара в формате HTML.
-        /// Используется для отображения на странице.
-        /// </summary>
+        [Display(Name = "Состав (HTML)")]
         public string? CompositionHtml { get; set; }
 
-        /// <summary>
-        /// Флаг активности.
-        /// Если false — товар скрыт из каталога.
-        /// </summary>
+        [Display(Name = "Активен")]
         public bool IsActive { get; set; } = true;
 
-        /// <summary>
-        /// Внешний ключ на категорию (nullable).
-        /// </summary>
+        [Display(Name = "Категория")]
         public int CategoryId { get; set; }
 
-        /// <summary>
-        /// Навигационное свойство: категория товара.
-        /// </summary>
         public Category? Category { get; set; }
 
-        /// <summary>
-        /// Навигационное свойство: изображения товара.
-        /// </summary>
         public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
 
-        /// <summary>
-        /// Навигационное свойство: атрибуты товара (например, размер, цвет).
-        /// </summary>
         public ICollection<ProductAttribute> Attributes { get; set; } = new List<ProductAttribute>();
 
         public ICollection<Price> Prices { get; set; } = new List<Price>();
-
+        }
     }
-}

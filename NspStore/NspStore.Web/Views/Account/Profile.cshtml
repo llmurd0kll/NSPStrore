@@ -1,18 +1,39 @@
 ﻿@model NspStore.Infrastructure.Identity.ApplicationUser
 @{
     ViewData["Title"] = "Профиль";
-}
+
+    // Генерация инициалов для аватара
+    string initials = string.Empty;
+    if (!string.IsNullOrWhiteSpace(Model.FullName))
+        {
+        var parts = Model.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        initials = string.Join("", parts.Select(p => p[0])).ToUpperInvariant();
+        }
+    else if (!string.IsNullOrWhiteSpace(Model.Email))
+        {
+        initials = Model.Email[0].ToString().ToUpperInvariant();
+        }
+    }
 
 <section class="section profile">
     <div class="container">
         <h1 class="h1">Профиль</h1>
 
-        <div class="profile__info">
-            <p><strong>Email:</strong> @Model.Email</p>
-            <p><strong>Имя:</strong> @Model.FullName</p>
+        <div class="profile__header">
+            <!-- Аватар с инициалами -->
+            <div class="profile__avatar">
+                @initials
+            </div>
+            <div class="profile__info">
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Имя:</strong> @(string.IsNullOrEmpty(Model.FullName) ? "—" : Model.FullName)</p>
+            </div>
         </div>
 
         <div class="section__actions profile__actions">
+            <a class="btn btn--info" asp-controller="Account" asp-action="EditProfile">
+                ✏️ Редактировать профиль
+            </a>
             <a class="btn btn--primary" asp-controller="Addresses" asp-action="Index">
                 Мои адреса
             </a>

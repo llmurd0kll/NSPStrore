@@ -1,6 +1,7 @@
 ﻿using NspStore.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace NspStore.Domain.Entities
@@ -20,18 +21,21 @@ namespace NspStore.Domain.Entities
         /// Дата и время создания заказа (UTC).
         /// По умолчанию выставляется при создании объекта.
         /// </summary>
+        [Display(Name = "Дата создания")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// Внешний ключ на пользователя (AspNetUsers.Id).
         /// Навигация на ApplicationUser хранится в Infrastructure.
         /// </summary>
+        [Display(Name = "Пользователь")]
         public string UserId { get; set; } = null!;
 
         /// <summary>
         /// Текущий статус заказа (enum OrderStatus).
         /// По умолчанию — Новый.
         /// </summary>
+        [Display(Name = "Статус заказа")]
         public OrderStatus Status { get; set; } = OrderStatus.New;
 
         /// <summary>
@@ -48,6 +52,7 @@ namespace NspStore.Domain.Entities
         /// <summary>
         /// Внешний ключ на адрес доставки (nullable).
         /// </summary>
+        [Display(Name = "Адрес доставки")]
         public int? ShippingAddressId { get; set; }
 
         /// <summary>
@@ -59,6 +64,7 @@ namespace NspStore.Domain.Entities
         /// <summary>
         /// Навигационное свойство: список товаров в заказе.
         /// </summary>
+        [Display(Name = "Товары в заказе")]
         public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
 
         /// <summary>

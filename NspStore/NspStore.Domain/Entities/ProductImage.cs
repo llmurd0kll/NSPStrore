@@ -1,36 +1,47 @@
-﻿namespace NspStore.Domain.Entities
-{
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NspStore.Domain.Entities
+    {
     /// <summary>
-    /// Изображение товара.
-    /// Хранит путь к файлу и порядок отображения.
+    /// Изображение товара (разные размеры).
     /// </summary>
     public class ProductImage
-    {
-        /// <summary>
-        /// Уникальный идентификатор изображения (PK).
-        /// </summary>
+        {
         public int Id { get; set; }
 
         /// <summary>
-        /// Путь или URL к изображению.
-        /// Рекомендуется хранить относительный путь (например, "/images/products/123.jpg").
+        /// Путь к оригиналу.
         /// </summary>
-        public string Url { get; set; } = null!;
+        [Display(Name = "Оригинал")]
+        public string OriginalUrl { get; set; } = string.Empty;
 
         /// <summary>
-        /// Порядок сортировки изображений.
-        /// 0 — главное изображение, далее дополнительные.
+        /// Путь к миниатюре (например, 300x300).
         /// </summary>
+        [Display(Name = "Миниатюра")]
+        public string ThumbUrl { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Путь к среднему размеру (например, 800x800).
+        /// </summary>
+        [Display(Name = "Среднее изображение")]
+        public string MediumUrl { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Порядок сортировки.
+        /// </summary>
+        [Display(Name = "Порядок сортировки")]
         public int SortOrder { get; set; }
 
         /// <summary>
-        /// Внешний ключ на продукт.
+        /// Внешний ключ на товар.
         /// </summary>
+        [Display(Name = "Id товара")]
         public int ProductId { get; set; }
 
         /// <summary>
-        /// Навигационное свойство: продукт, к которому относится изображение.
+        /// Навигационное свойство: товар.
         /// </summary>
         public Product Product { get; set; } = null!;
+        }
     }
-}

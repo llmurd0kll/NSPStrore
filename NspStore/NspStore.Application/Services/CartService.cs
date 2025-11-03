@@ -1,9 +1,10 @@
 ﻿using System.Text.Json;
 using NspStore.Domain.Entities;
-using NspStore.Application.Services;
+using Microsoft.AspNetCore.Http;
 
-namespace NspStore.Web.Services
-{
+
+namespace NspStore.Application.Services
+    {
     /// <summary>
     /// DTO для хранения элемента корзины в сессии.
     /// </summary>
@@ -95,5 +96,40 @@ namespace NspStore.Web.Services
         /// Очистить корзину.
         /// </summary>
         public void Clear() => Save(new List<CartItemDto>());
+
+        /// <summary>
+        /// Уменьшить количество товара на 1.
+        /// Если количество становится 0 — удаляем товар из корзины.
+        /// </summary>
+        public void Decrease(int productId)
+            {
+            var items = Get();
+            var item = items.FirstOrDefault(i => i.ProductId == productId);
+            if (item == null)
+                return;
+
+            item.Qty -= 1;
+            if (item.Qty <= 0)
+                {
+                items.Remove(item);
+                }
+
+            Save(items);
+            }
+
+        /// <summary>
+        /// Увеличить количество товара на 1 (удобно для кнопки "+").
+        /// </summary>
+        public void Increase(int productId)
+            {
+            var items = Get();
+            var item = items.FirstOrDefault(i => i.ProductId == productId);
+            if (item == null)
+                return;
+
+            item.Qty += 1;
+            Save(items);
+            }
+
+        }
     }
-}

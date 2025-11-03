@@ -1,23 +1,23 @@
 ﻿@model NspStore.Application.ViewsModels.CartVm
 @{
     ViewData["Title"] = "Корзина";
-}
+    }
 
 <section class="section cart">
     <div class="container">
         <h1 class="h1">Корзина</h1>
 
         @if (!Model.Items.Any())
-        {
+            {
             <p class="muted">Корзина пуста.</p>
             <div class="section__actions">
                 <a class="btn btn--primary" asp-controller="Catalog" asp-action="Index">
                     Перейти в каталог
                 </a>
             </div>
-        }
+            }
         else
-        {
+            {
             <table class="table cart__table">
                 <thead>
                     <tr>
@@ -30,11 +30,28 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Items)
-                    {
+                        {
                         <tr>
-                            <td>@item.Name</td>
+                            <td>@(string.IsNullOrEmpty(item.Name) ? "—" : item.Name)</td>
                             <td>@item.Price.ToString("0.00") BYN</td>
-                            <td>@item.Qty</td>
+                            <td>
+                                <div class="cart-item__qty">
+                                    <form method="post" asp-action="Decrease" class="inline-form">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn--secondary btn--sm" aria-label="Уменьшить количество @item.Name">−</button>
+                                    </form>
+
+                                    <span class="cart-item__quantity">@item.Qty</span>
+
+                                    <form method="post" asp-action="Increase" class="inline-form">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn--secondary btn--sm" aria-label="Увеличить количество @item.Name">+</button>
+                                    </form>
+                                </div>
+                            </td>
+
                             <td>@item.LineTotal.ToString("0.00") BYN</td>
                             <td>
                                 <form method="post" asp-action="Remove" class="inline-form" aria-label="Удалить @item.Name из корзины">
@@ -44,7 +61,7 @@
                                 </form>
                             </td>
                         </tr>
-                    }
+                        }
                 </tbody>
             </table>
 
@@ -54,7 +71,7 @@
                 <div class="cart__actions section__actions">
                     <form method="post" asp-action="Clear" class="inline-form">
                         @Html.AntiForgeryToken()
-                        <button class="btn btn--secondary" type="submit">Очистить корзину</button>
+                        <button class="btn btn--secondary" type="submit" onclick="return confirm('Очистить корзину?');">Очистить корзину</button>
                     </form>
 
                     <a class="btn btn--primary" asp-controller="Checkout" asp-action="Index">
@@ -62,7 +79,6 @@
                     </a>
                 </div>
             </div>
-        }
+            }
     </div>
 </section>
-

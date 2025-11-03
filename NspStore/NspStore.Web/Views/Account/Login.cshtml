@@ -1,7 +1,7 @@
 ﻿@model NspStore.Application.ViewsModels.LoginVm
 @{
     ViewData["Title"] = "Вход";
-}
+    }
 
 <section class="section auth">
     <div class="container">
@@ -9,6 +9,9 @@
 
         <form class="form form--auth" method="post">
             @Html.AntiForgeryToken()
+
+            <!-- Общие ошибки (например, неверный логин/пароль) -->
+            <div asp-validation-summary="ModelOnly" class="alert alert--error"></div>
 
             <div class="form__row">
                 <label asp-for="Email" class="form__label"></label>
